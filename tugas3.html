@@ -1,1 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas 3 - Tema Maroon</title>
+    <style>
+        /* CSS INTERNAL */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #800000;
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        nav {
+            background-color: #4a0000;
+            display: flex;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav a {
+            color: white;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        nav a:hover {
+            background-color: #a52a2a;
+        }
 
+        .container {
+            max-width: 700px;
+            margin: 3rem auto;
+            padding: 2.5rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            flex: 1;
+        }
+        h2 {
+            color: #800000;
+            margin-bottom: 1.5rem;
+        }
+        p {
+            margin-bottom: 2rem;
+            color: #666;
+        }
+
+        /* Desain Tombol Google Form */
+        .btn-form {
+            display: inline-block;
+            background-color: #800000;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(128, 0, 0, 0.3);
+            border: 2px solid transparent;
+        }
+        .btn-form:hover {
+            background-color: #ffffff;
+            color: #800000;
+            border: 2px solid #800000;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(128, 0, 0, 0.4);
+        }
+        .btn-form:active {
+            transform: translateY(0);
+        }
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #800000;
+            color: white;
+        }
+        @media (max-width: 600px) {
+            nav { flex-direction: column; text-align: center; }
+            .container { margin: 1.5rem; padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>TUGAS 3</h1>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="biodata.html">Biodata</a>
+        <a href="galeri.html">Galeri</a>
+        <a href="video.html">Video</a>
+        <a href="tugas3.html">Tugas 3</a>
+    </nav>
+    <div class="container">
+        <h2>Pengumpulan Tugas</h2>
+        <p>Silakan klik tombol di bawah ini untuk mengakses Google Form dan mengirimkan laporan tugas Anda.</p>
+        <!-- Tombol Link ke Google Form -->
+        <a href="https://forms.gle/yQzo1WMxeoweATPG6" target="_blank" class="btn-form">
+            Buka Formulir Tugas
+        </a>
+    </div>
+    <footer>
+        <p>&copy; 2026 Nama Anda</p>
+    </footer>
+
+</body>
+</html>
