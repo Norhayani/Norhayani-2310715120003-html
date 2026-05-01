@@ -1,1 +1,131 @@
-
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sajian Data - Tema Maroon</title>
+    <style>
+        /* CSS INTERNAL */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #800000;
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        nav {
+            background-color: #4a0000;
+            display: flex;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav a {
+            color: white;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        nav a:hover {
+            background-color: #a52a2a;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h2 {
+            color: #800000;
+            margin-bottom: 1rem;
+        }
+        .data-info {
+            margin-bottom: 2rem;
+            color: #555;
+            font-style: italic;
+        }
+        /* Desain Tombol */
+        .btn-data {
+            display: inline-block;
+            background-color: #800000;
+            color: white;
+            padding: 18px 35px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(128, 0, 0, 0.2);
+            margin-bottom: 2rem;
+        }
+        .btn-data:hover {
+            background-color: #4a0000;
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(128, 0, 0, 0.4);
+        }
+        /* Frame untuk Preview Data (Opsional) */
+        .data-frame {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #800000;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #800000;
+            color: white;
+            margin-top: 3rem;
+        }
+        @media (max-width: 600px) {
+            nav { flex-direction: column; text-align: center; }
+            .data-frame { height: 400px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>VISUALISASI DATA</h1>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="biodata.html">Biodata</a>
+        <a href="galeri.html">Galeri</a>
+        <a href="video.html">Video</a>
+        <a href="tugas3.html">Tugas 3</a>
+        <a href="sajiandata.html">Sajian Data</a>
+    </nav>
+    <div class="container">
+        <h2>Laporan Analisis Data</h2>
+        <p class="data-info">Klik tombol di bawah untuk melihat laporan lengkap di Google Data Studio.</p>
+        <!-- Tombol Utama -->
+        <a href="https://datastudio.google.com/reporting/4f8afae0-c417-47b2-b08e-6314c203bb9d" target="_blank" class="btn-data">
+            BUKA DASHBOARD DATA
+        </a>
+        <hr style="margin: 2rem 0; border: 0; border-top: 1px solid #eee;">
+        <h3>Preview Laporan</h3>
+        <!-- Menyematkan Laporan secara langsung (Embed) -->
+        <iframe class="data-frame" src="https://datastudio.google.com/embed/reporting/4f8afae0-c417-47b2-b08e-6314c203bb9d" frameborder="0" style="border:0" allowfullscreen></iframe>
+    </div>
+    <footer>
+        <p>&copy; 2026 Nama Anda</p>
+    </footer>
+</body>
+</html>
