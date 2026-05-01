@@ -11,17 +11,14 @@
         nav { background-color: #4a0000; display: flex; justify-content: center; position: sticky; top: 0; z-index: 1000; }
         nav a { color: white; padding: 1rem 1.5rem; text-decoration: none; text-transform: uppercase; font-weight: bold; font-size: 0.9rem; }
         nav a:hover { background-color: #a52a2a; }
-        
         .container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         h2 { color: #800000; border-bottom: 2px solid #800000; margin-bottom: 1.5rem; padding-bottom: 5px; }
         h3 { color: #4a0000; margin: 1.5rem 0 1rem 0; font-size: 1.2rem; background: #fff5f5; padding: 5px 10px; border-left: 4px solid #800000; }
-        
         .form-group { margin-bottom: 1.2rem; }
         label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
         input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"], select, textarea {
             width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem;
         }
-        
         /* Style untuk Button Jenis Transaksi */
         .transaction-type { display: flex; gap: 10px; margin-top: 5px; }
         .radio-btn { flex: 1; text-align: center; }
@@ -31,22 +28,18 @@
         }
         .radio-btn input:checked + label.debet-label { background: #800000; color: white; border-color: #4a0000; }
         .radio-btn input:checked + label.kredit-label { background: #a52a2a; color: white; border-color: #800000; }
-
         .btn-submit {
             display: block; width: 100%; background-color: #800000; color: white; padding: 1rem;
             border: none; border-radius: 5px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 2rem;
         }
         .btn-submit:hover { background-color: #4a0000; }
-
         footer { text-align: center; padding: 1.5rem; background-color: #800000; color: white; margin-top: 3rem; }
     </style>
 </head>
 <body>
-
 <header>
     <h1>TUGAS 3: FORMULIR INPUT</h1>
 </header>
-
 <nav>
     <a href="index.html">Home</a>
     <a href="biodata.html">Biodata</a>
@@ -54,11 +47,9 @@
     <a href="tugas3.html">Tugas 3</a>
     <a href="sajiandata.html">Sajian Data</a>
 </nav>
-
 <div class="container">
     <form id="dataForm">
         <h2>Formulir Pengumpulan Data</h2>
-
         <h3>Data Demografi</h3>
         <div class="form-group">
             <label>Nama Pengguna</label>
@@ -84,7 +75,6 @@
                 <option value="S2 - Magister">
             </datalist>
         </div>
-
         <h3>Data Bank</h3>
         <div class="form-group">
             <label>Nama Bank</label>
@@ -101,7 +91,6 @@
             <label>Nomor Rekening</label>
             <input type="number" name="rekening">
         </div>
-
         <h3>Data Transaksi Keuangan</h3>
         <div class="form-group">
             <label>Tanggal Transaksi</label>
@@ -124,14 +113,11 @@
                 </div>
             </div>
         </div>
-
         <button type="submit" class="btn-submit">Kirim Data ke Sheets</button>
     </form>
 </div>
-
 <footer>
     <p>&copy; 2026 Norhayani - Dibuat dengan &hearts;</p>
 </footer>
-
 </body>
 </html>
