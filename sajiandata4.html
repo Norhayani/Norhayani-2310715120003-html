@@ -114,3 +114,152 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Data Terpadu</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            text-align: center;
+        }
+
+        h1 { color: #1a73e8; margin-bottom: 30px; }
+
+        .menu-buttons {
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background-color: #ffffff;
+            color: #1a73e8;
+            border: 2px solid #1a73e8;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #1a73e8;
+            color: white;
+        }
+
+        .btn.active {
+            background-color: #1a73e8;
+            color: white;
+        }
+
+        .data-section {
+            display: none; /* Sembunyi secara default */
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Pembungkus Iframe Responsif */
+        .responsive-iframe {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 75%; /* Rasio 4:3 */
+        }
+
+        .responsive-iframe iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .footer { margin-top: 40px; color: #888; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Dashboard Penyajian Data</h1>
+        
+        <div class="menu-buttons">
+            <button class="btn" onclick="showSection('looker')">Visualisasi Looker Studio</button>
+            <button class="btn" onclick="showSection('sheets')">Data Google Sheets</button>
+        </div>
+
+        <!-- Bagian Looker Studio -->
+        <div id="looker" class="data-section">
+            <h3>Laporan Looker Studio</h3>
+            <div class="responsive-iframe">
+                <iframe 
+                    src="https://datastudio.google.com/embed/reporting/8bda613c-edf9-4f2a-ab60-513dcb0a03dd/page/page_12345" 
+                    allowfullscreen 
+                    sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
+                </iframe>
+            </div>
+        </div>
+
+        <!-- Bagian Google Sheets -->
+        <div id="sheets" class="data-section">
+            <h3>Tabel Data Google Sheets</h3>
+            <div class="responsive-iframe">
+                <iframe 
+                    src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQkPVAoBII1uVtxGjZScJRiMHw5ZJ-Ak3p1tdYtjZacuLui9J4rVu4XYMwAbrYEjv5EcK8EDiBlEqZw/pubhtml?gid=1562719311&amp;single=true&amp;widget=true&amp;headers=false">
+                </iframe>
+            </div>
+        </div>
+
+        <div class="footer">
+            Dikelola melalui GitHub Pages &copy; 2024
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Sembunyikan semua section
+            document.querySelectorAll('.data-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Tampilkan yang dipilih
+            document.getElementById(sectionId).style.display = 'block';
+
+            // Update status tombol aktif
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+
+</body>
+</html>
