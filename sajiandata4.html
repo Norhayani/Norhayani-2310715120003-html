@@ -3,79 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sajian Data Interaktif</title>
+    <title>Sajian Data GitHub</title>
     <style>
-        /* Gaya dasar halaman */
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f5f7fa;
-            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f9f9f9;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
+            flex-direction: column;
             min-height: 100vh;
+            margin: 0;
             padding: 20px;
         }
-        .container {
-            width: 100%;
-            max-width: 900px;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             text-align: center;
-        }
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-size: 24px;
-        }
-        p {
-            color: #7f8c8d;
-            margin-bottom: 25px;
-        }
-        /* Container agar iframe responsif */
-        .video-container {
-            position: relative;
-            overflow: hidden;
             width: 100%;
-            padding-top: 75%; /* Rasio 4:3 (sesuai 600x450) */
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
+            max-width: 650px;
         }
-        .video-container iframe {
+
+        h2 { color: #333; margin-top: 0; }
+        p { color: #666; margin-bottom: 25px; }
+
+        .btn-tampilkan {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-tampilkan:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        #data-container {
+            margin-top: 20px;
+            display: none; /* Tersembunyi di awal */
+            width: 100%;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsivitas Iframe */
+        .iframe-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 75%; /* Menjaga aspek rasio 600:450 */
+            height: 0;
+        }
+
+        .iframe-wrapper iframe {
             position: absolute;
             top: 0;
             left: 0;
-            bottom: 0;
-            right: 0;
             width: 100%;
             height: 100%;
-        }
-        .footer {
-            margin-top: 20px;
-            font-size: 12px;
-            color: #bdc3c7;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Dashboard Penyajian Data</h1>
-        <p>Gunakan kontrol di dalam laporan untuk memfilter atau mengeksplorasi data.</p>
 
-        <div class="video-container">
-            <iframe 
-                src="https://datastudio.google.com/embed/reporting/8bda613c-edf9-4f2a-ab60-513dcb0a03dd/page/page_12345" 
-                frameborder="0" 
-                style="border:0" 
-                allowfullscreen 
-                sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
-            </iframe>
-        </div>
-        <div class="footer">
-            Dihosting melalui GitHub Pages
+    <div class="card">
+        <h2>Visualisasi Data</h2>
+        <p>Klik tombol di bawah untuk memuat dashboard interaktif.</p>
+        
+        <button class="btn-tampilkan" onclick="showData()">Tampilkan Sajian Data</button>
+
+        <div id="data-container">
+            <div class="iframe-wrapper">
+                <!-- Iframe Pesanan Anda -->
+                <iframe 
+                    width="600" 
+                    height="450" 
+                    src="https://datastudio.google.com/embed/reporting/8bda613c-edf9-4f2a-ab60-513dcb0a03dd/page/page_12345" 
+                    frameborder="0" 
+                    style="border:0" 
+                    allowfullscreen 
+                    sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
+                </iframe>
+            </div>
         </div>
     </div>
+
+    <script>
+        function showData() {
+            var container = document.getElementById("data-container");
+            var button = document.querySelector(".btn-tampilkan");
+            
+            // Menampilkan kontainer iframe
+            container.style.display = "block";
+            // Menyembunyikan tombol setelah diklik (opsional)
+            button.style.display = "none";
+        }
+    </script>
+
 </body>
 </html>
