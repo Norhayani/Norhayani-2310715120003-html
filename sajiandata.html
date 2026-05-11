@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sajian Data - Looker Studio</title>
+    <title>Sajian Data - Tema Maroon</title>
     <style>
         /* CSS INTERNAL */
         * {
@@ -11,21 +11,24 @@
             margin: 0;
             padding: 0;
         }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8f9fa;
             color: #333;
             line-height: 1.6;
         }
+
         header {
             background-color: #800000; /* Maroon */
             color: white;
             padding: 2.5rem 1rem;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border-bottom: 5px solid #4a0000;
         }
+
         nav {
-            background-color: #4a0000; /* Maroon Gelap */
+            background-color: #4a0000;
             display: flex;
             justify-content: center;
             position: sticky;
@@ -33,6 +36,7 @@
             z-index: 1000;
             flex-wrap: wrap;
         }
+
         nav a {
             color: white;
             padding: 1rem 1.5rem;
@@ -40,59 +44,71 @@
             text-transform: uppercase;
             font-weight: bold;
             font-size: 0.85rem;
-            transition: background 0.3s;
+            transition: 0.3s;
         }
+
         nav a:hover {
             background-color: #800000;
         }
+
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 2rem auto;
             padding: 2rem;
             background: white;
             border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
             text-align: center;
         }
+
         h2 {
             color: #800000;
             margin-bottom: 1rem;
-            text-transform: uppercase;
+            font-size: 2rem;
         }
-        .info-text {
+
+        .description {
             margin-bottom: 2rem;
             color: #666;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        /* Tombol Akses */
-        .btn-maroon {
+
+        /* Tombol Utama */
+        .btn-data {
             display: inline-block;
             background-color: #800000;
             color: white;
-            padding: 15px 30px;
-            font-size: 1rem;
+            padding: 18px 40px;
+            font-size: 1.1rem;
             font-weight: bold;
             text-decoration: none;
-            border-radius: 50px;
+            border-radius: 8px;
             transition: all 0.3s ease;
-            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 15px rgba(128, 0, 0, 0.3);
+            margin-bottom: 3rem;
             border: 2px solid #800000;
         }
-        .btn-maroon:hover {
-            background-color: transparent;
+
+        .btn-data:hover {
+            background-color: #fff;
             color: #800000;
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(128, 0, 0, 0.3);
         }
-        /* Frame Kontainer (Looker Studio) */
-        .data-wrapper {
+
+        /* Iframe Container */
+        .iframe-container {
             position: relative;
             width: 100%;
-            padding-top: 70%; /* Rasio aspek laporan */
-            overflow: hidden;
+            padding-top: 75%; /* Rasio 4:3 */
             border: 4px solid #800000;
             border-radius: 10px;
+            overflow: hidden;
+            background: #eee;
         }
-        .data-wrapper iframe {
+
+        .iframe-container iframe {
             position: absolute;
             top: 0;
             left: 0;
@@ -100,46 +116,57 @@
             height: 100%;
             border: 0;
         }
+
         footer {
             text-align: center;
-            padding: 1.5rem;
+            padding: 2rem;
             background-color: #800000;
             color: white;
-            margin-top: 3rem;
+            margin-top: 4rem;
         }
+
         @media (max-width: 768px) {
             nav a { padding: 0.8rem 1rem; font-size: 0.75rem; }
-            .container { margin: 1rem; padding: 1rem; }
-            .data-wrapper { padding-top: 150%; /* Lebih memanjang di HP */ }
+            .container { margin: 1rem; padding: 1.5rem; }
+            .iframe-container { padding-top: 150%; } /* Lebih tinggi di mobile */
         }
     </style>
 </head>
 <body>
+
     <header>
-        <h1>VISUALISASI SAJIAN DATA</h1>
+        <h1>VISUALISASI & SAJIAN DATA</h1>
     </header>
+
     <nav>
         <a href="index.html">Home</a>
         <a href="biodata.html">Biodata</a>
         <a href="galeri.html">Galeri</a>
         <a href="video.html">Video</a>
         <a href="tugas3.html">Tugas 3</a>
-        <a href="sajiandata.html">Sajian Data</a>
+        <a href="sajiandata.html" style="background-color: #800000;">Sajian Data</a>
     </nav>
+
     <div class="container">
-        <h2>Laporan Analisis Interaktif</h2>
-        <p class="info-text">Silakan berinteraksi langsung dengan grafik di bawah ini atau klik tombol untuk tampilan layar penuh.</p>
-        <!-- Tombol Link Eksternal -->
-        <a href="https://datastudio.google.com/embed/reporting/8bda613c-edf9-4f2a-ab60-513dcb0a03dd/page/page_12345" target="_blank" class="btn-maroon">
-            LIHAT LAPORAN FULLSCREEN
+        <h2>Dashboard Laporan</h2>
+        <p class="description">
+            Halaman ini menyajikan data statistik secara interaktif menggunakan Google Data Studio. 
+            Klik tombol di bawah untuk membuka laporan dalam mode layar penuh.
+        </p>
+        
+        <!-- Link Reporting yang diminta -->
+        <a href="https://datastudio.google.com/reporting/4f8afae0-c417-47b2-b08e-6314c203bb9d" target="_blank" class="btn-data">
+            BUKA LAPORAN SEKARANG
         </a>
-        <!-- Area Embed Laporan Looker Studio -->
-        <div class="data-wrapper">
-            <iframe src="https://datastudio.google.com/embed/reporting/8bda613c-edf9-4f2a-ab60-513dcb0a03dd/page/page_12345" frameborder="0" style="border:0" allowfullscreen></iframe>
+
+        <div class="iframe-container">
+            <!-- Menggunakan link embed untuk tampilan pratinjau langsung -->
+            <iframe src="https://datastudio.google.com/embed/reporting/4f8afae0-c417-47b2-b08e-6314c203bb9d" allowfullscreen></iframe>
         </div>
     </div>
+
     <footer>
-        <p>&copy; 2024 Nama Anda - Project Dashboard Maroon</p>
+        <p>&copy; 2026 Nama Anda | Tema Maroon Elegan</p>
     </footer>
 
 </body>
