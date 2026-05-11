@@ -11,14 +11,12 @@
             margin: 0;
             padding: 0;
         }
-
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: #f8f9fa;
             color: #333;
             line-height: 1.6;
         }
-
         header {
             background-color: #800000; /* Maroon */
             color: white;
@@ -26,7 +24,6 @@
             text-align: center;
             border-bottom: 5px solid #4a0000;
         }
-
         nav {
             background-color: #4a0000;
             display: flex;
@@ -36,7 +33,6 @@
             z-index: 1000;
             flex-wrap: wrap;
         }
-
         nav a {
             color: white;
             padding: 1rem 1.5rem;
@@ -46,11 +42,9 @@
             font-size: 0.85rem;
             transition: 0.3s;
         }
-
         nav a:hover {
             background-color: #800000;
         }
-
         .container {
             max-width: 1100px;
             margin: 2rem auto;
@@ -60,13 +54,11 @@
             box-shadow: 0 8px 30px rgba(0,0,0,0.1);
             text-align: center;
         }
-
         h2 {
             color: #800000;
             margin-bottom: 1rem;
             font-size: 2rem;
         }
-
         .description {
             margin-bottom: 2rem;
             color: #666;
@@ -74,7 +66,6 @@
             margin-left: auto;
             margin-right: auto;
         }
-
         /* Tombol Utama */
         .btn-data {
             display: inline-block;
@@ -90,7 +81,6 @@
             margin-bottom: 3rem;
             border: 2px solid #800000;
         }
-
         .btn-data:hover {
             background-color: #fff;
             color: #800000;
@@ -107,7 +97,6 @@
             overflow: hidden;
             background: #eee;
         }
-
         .iframe-container iframe {
             position: absolute;
             top: 0;
@@ -116,7 +105,6 @@
             height: 100%;
             border: 0;
         }
-
         footer {
             text-align: center;
             padding: 2rem;
@@ -124,7 +112,6 @@
             color: white;
             margin-top: 4rem;
         }
-
         @media (max-width: 768px) {
             nav a { padding: 0.8rem 1rem; font-size: 0.75rem; }
             .container { margin: 1rem; padding: 1.5rem; }
@@ -133,41 +120,29 @@
     </style>
 </head>
 <body>
-
     <header>
         <h1>VISUALISASI & SAJIAN DATA</h1>
     </header>
-
     <nav>
-        <a href="index.html">Home</a>
-        <a href="biodata.html">Biodata</a>
-        <a href="galeri.html">Galeri</a>
-        <a href="video.html">Video</a>
-        <a href="tugas3.html">Tugas 3</a>
         <a href="sajiandata.html" style="background-color: #800000;">Sajian Data</a>
     </nav>
-
     <div class="container">
         <h2>Dashboard Laporan</h2>
         <p class="description">
             Halaman ini menyajikan data statistik secara interaktif menggunakan Google Data Studio. 
             Klik tombol di bawah untuk membuka laporan dalam mode layar penuh.
         </p>
-        
         <!-- Link Reporting yang diminta -->
         <a href="https://datastudio.google.com/reporting/4f8afae0-c417-47b2-b08e-6314c203bb9d" target="_blank" class="btn-data">
             BUKA LAPORAN SEKARANG
         </a>
-
         <div class="iframe-container">
             <!-- Menggunakan link embed untuk tampilan pratinjau langsung -->
             <iframe src="https://datastudio.google.com/embed/reporting/4f8afae0-c417-47b2-b08e-6314c203bb9d" allowfullscreen></iframe>
         </div>
     </div>
-
     <footer>
         <p>&copy; 2026 Nama Anda | Tema Maroon Elegan</p>
     </footer>
-
 </body>
 </html>
