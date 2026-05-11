@@ -3,87 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sajian Data - Google Sheets</title>
+    <title>Sajian Data - Looker Studio</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f9f9f9; color: #333; }
-        header { background-color: #800000; color: white; padding: 2rem 1rem; text-align: center; }
-        nav { background-color: #4a0000; display: flex; justify-content: center; position: sticky; top: 0; }
-        nav a { color: white; padding: 1rem 1.5rem; text-decoration: none; text-transform: uppercase; font-weight: bold; }
-        nav a:hover { background-color: #a52a2a; }
-
-        .container { max-width: 1000px; margin: 2rem auto; padding: 1rem; background: white; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow-x: auto; }
-        h2 { color: #800000; text-align: center; margin-bottom: 1.5rem; }
-
-        table { width: 100%; border-collapse: collapse; margin-top: 1rem; min-width: 600px; }
-        table, th, td { border: 1px solid #ddd; }
-        th { background-color: #800000; color: white; padding: 12px; text-align: left; }
-        td { padding: 10px; font-size: 0.9rem; }
-        tr:nth-child(even) { background-color: #f2f2f2; }
-        tr:hover { background-color: #ffeaea; }
-
-        .status-badge { padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 0.8rem; }
-        .badge-debet { background: #d4edda; color: #155724; }
-        .badge-kredit { background: #f8d7da; color: #721c24; }
-
-        footer { text-align: center; padding: 1.5rem; background-color: #800000; color: white; margin-top: 3rem; }
+        /* CSS INTERNAL */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #800000; /* Maroon */
+            color: white;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        nav {
+            background-color: #4a0000; /* Maroon Gelap */
+            display: flex;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            flex-wrap: wrap;
+        }
+        nav a {
+            color: white;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 0.85rem;
+            transition: background 0.3s;
+        }
+        nav a:hover {
+            background-color: #800000;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h2 {
+            color: #800000;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+        .info-text {
+            margin-bottom: 2rem;
+            color: #666;
+        }
+        /* Tombol Akses */
+        .btn-maroon {
+            display: inline-block;
+            background-color: #800000;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            margin-bottom: 2.5rem;
+            border: 2px solid #800000;
+        }
+        .btn-maroon:hover {
+            background-color: transparent;
+            color: #800000;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(128, 0, 0, 0.3);
+        }
+        /* Frame Kontainer (Looker Studio) */
+        .data-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 70%; /* Rasio aspek laporan */
+            overflow: hidden;
+            border: 4px solid #800000;
+            border-radius: 10px;
+        }
+        .data-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #800000;
+            color: white;
+            margin-top: 3rem;
+        }
+        @media (max-width: 768px) {
+            nav a { padding: 0.8rem 1rem; font-size: 0.75rem; }
+            .container { margin: 1rem; padding: 1rem; }
+            .data-wrapper { padding-top: 150%; /* Lebih memanjang di HP */ }
+        }
     </style>
 </head>
 <body>
-
-<header>
-    <h1>SAJIAN DATA TRANSAKSI</h1>
-</header>
-
-<nav>
-    <a href="index.html">Home</a>
-    <a href="biodata.html">Biodata</a>
-    <a href="tugas3.html">Input Data</a>
-    <a href="sajiandata.html">Sajian Data</a>
-</nav>
-
-<div class="container">
-    <h2>Data yang Tersimpan di Google Sheets</h2>
-    
-    <!-- Bagian ini biasanya diisi menggunakan Iframe dari Google Sheets atau API -->
-    <table>
-        <thead>
-            <tr>
-                <th>Nama</th>
-                <th>Pendidikan</th>
-                <th>Bank</th>
-                <th>Uraian Transaksi</th>
-                <th>Jenis</th>
-                <th>Nominal</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Contoh Data Dummy -->
-            <tr>
-                <td>Norhayani</td>
-                <td>S1 - Sarjana</td>
-                <td>BCA</td>
-                <td>Pembelian Hosting</td>
-                <td><span class="status-badge badge-kredit">Kredit</span></td>
-                <td>Rp 500.000</td>
-            </tr>
-            <tr>
-                <td>Budi Santoso</td>
-                <td>SMA</td>
-                <td>Mandiri</td>
-                <td>Gaji Bulanan</td>
-                <td><span class="status-badge badge-debet">Debet</span></td>
-                <td>Rp 5.000.000</td>
-            </tr>
-        </tbody>
-    </table>
-    
-    <p style="text-align:center; margin-top:20px; font-style:italic;">*Data diperbarui secara otomatis dari sistem cloud.</p>
-</div>
-
-<footer>
-    <p>&copy; 2026 Norhayani - Dibuat dengan &hearts;</p>
-</footer>
+    <header>
+        <h1>VISUALISASI SAJIAN DATA</h1>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="biodata.html">Biodata</a>
+        <a href="galeri.html">Galeri</a>
+        <a href="video.html">Video</a>
+        <a href="tugas3.html">Tugas 3</a>
+        <a href="sajiandata.html">Sajian Data</a>
+    </nav>
+    <div class="container">
+        <h2>Laporan Analisis Interaktif</h2>
+        <p class="info-text">Silakan berinteraksi langsung dengan grafik di bawah ini atau klik tombol untuk tampilan layar penuh.</p>
+        <!-- Tombol Link Eksternal -->
+        <a href="https://datastudio.google.com/embed/reporting/8bda613c-edf9-4f2a-ab60-513dcb0a03dd/page/page_12345" target="_blank" class="btn-maroon">
+            LIHAT LAPORAN FULLSCREEN
+        </a>
+        <!-- Area Embed Laporan Looker Studio -->
+        <div class="data-wrapper">
+            <iframe src="https://datastudio.google.com/embed/reporting/8bda613c-edf9-4f2a-ab60-513dcb0a03dd/page/page_12345" frameborder="0" style="border:0" allowfullscreen></iframe>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Nama Anda - Project Dashboard Maroon</p>
+    </footer>
 
 </body>
 </html>
