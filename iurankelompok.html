@@ -2,197 +2,149 @@
   <div class="card">
     <h2 class="section-title">
       <i class="fa-solid fa-hand-holding-dollar" style="color: var(--primary); margin-right: 8px;"></i>
-      Iuran Administrasi Kelompok
+      Rekapitulasi Iuran Anggota KUB
     </h2>
-    <p class="section-desc">Pencatatan iuran wajib, iuran pokok, dan iuran sukarela anggota untuk transparansi manajemen keuangan KUB.</p>
-    <!-- Widget Rangkuman Keuangan Kas Iuran -->
-    <div class="top-actions" style="margin-bottom: 22px; gap: 12px;">
+    <p class="section-desc">Daftar terpadu pembayaran iuran wajib, pokok, dan sukarela dari seluruh kelompok usaha bersama.</p>
+    
+    <!-- Ringkasan Kas -->
+    <div class="top-actions" style="margin-bottom: 20px; gap: 12px;">
       <div class="pill" style="background: #e8f8f5; border-color: #a3e4d7;">
         <i class="fa-solid fa-wallet" style="color: var(--primary-dark);"></i> 
         <span><strong>Total Iuran Masuk:</strong> Rp 4.850.000</span>
       </div>
       <div class="pill" style="background: #fef9e7; border-color: #f9e79f;">
         <i class="fa-solid fa-triangle-exclamation" style="color: #f39c12;"></i> 
-        <span><strong>Tunggakan Bulan Ini:</strong> Rp 350.000</span>
+        <span><strong>Total Tunggakan:</strong> Rp 350.000</span>
       </div>
     </div>
-    <!-- Sistem Tab untuk Berpindah Antar KUB -->
-    <div class="tabs" role="tablist" aria-label="Iuran KUB">
-      <button class="tab-btn active" type="button" onclick="showTab(event,'iuran-sm')" aria-selected="true">KUB Sumber Makmur</button>
-      <button class="tab-btn" type="button" onclick="showTab(event,'iuran-al')" aria-selected="false">KUB Angsa Laut</button>
-      <button class="tab-btn" type="button" onclick="showTab(event,'iuran-it')" aria-selected="false">KUB Intimung Taka</button>
-      <button class="tab-btn" type="button" onclick="showTab(event,'iuran-un')" aria-selected="false">KUB Usaha Nelayan</button>
+
+    <!-- Tabel Utama yang Rapi -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 50px; text-align: center;">No</th>
+            <th>Nama Anggota</th>
+            <th>Nama KUB</th>
+            <th>Jenis Iuran</th>
+            <th>Periode</th>
+            <th>Besaran (Rp)</th>
+            <th>Tanggal Bayar</th>
+            <th style="text-align: center;">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- KUB Sumber Makmur -->
+          <tr>
+            <td style="text-align: center;">1</td>
+            <td><strong>Junaidi</strong></td>
+            <td>KUB Sumber Makmur</td>
+            <td>Iuran Wajib Bulanan</td>
+            <td>Mei 2026</td>
+            <td>Rp 50.000</td>
+            <td>05 Mei 2026</td>
+            <td style="text-align: center;"><span class="badge">Lunas</span></td>
+          </tr>
+          <tr>
+            <td style="text-align: center;">2</td>
+            <td><strong>Nanang</strong></td>
+            <td>KUB Sumber Makmur</td>
+            <td>Iuran Wajib Bulanan</td>
+            <td>Mei 2026</td>
+            <td>Rp 50.000</td>
+            <td>08 Mei 2026</td>
+            <td style="text-align: center;"><span class="badge">Lunas</span></td>
+          </tr>
+          <tr>
+            <td style="text-align: center;">3</td>
+            <td><strong>Desir</strong></td>
+            <td>KUB Sumber Makmur</td>
+            <td>Iuran Wajib Bulanan</td>
+            <td>Mei 2026</td>
+            <td>Rp 50.000</td>
+            <td>10 Mei 2026</td>
+            <td style="text-align: center;"><span class="badge">Lunas</span></td>
+          </tr>
+          <tr>
+            <td style="text-align: center;">4</td>
+            <td><strong>Supyan</strong></td>
+            <td>KUB Sumber Makmur</td>
+            <td>Iuran Wajib Bulanan</td>
+            <td>Mei 2026</td>
+            <td>Rp 50.000</td>
+            <td style="color: var(--muted); font-style: italic;"> Belum Bayar </td>
+            <td style="text-align: center;"><span class="badge" style="background: #ffadad; color: #7a0000;">Belum Lunas</span></td>
+          </tr>
+          <tr>
+            <td style="text-align: center;">5</td>
+            <td><strong>Agus Efendi</strong></td>
+            <td>KUB Sumber Makmur</td>
+            <td>Iuran Pokok Awal</td>
+            <td>Mei 2026</td>
+            <td>Rp 150.000</td>
+            <td>02 Mei 2026</td>
+            <td style="text-align: center;"><span class="badge">Lunas</span></td>
+          </tr>
+
+          <!-- KUB Angsa Laut -->
+          <tr>
+            <td style="text-align: center;">6</td>
+            <td><strong>Muchsin</strong></td>
+            <td>KUB Angsa Laut</td>
+            <td>Iuran Wajib Bulanan</td>
+            <td>Mei 2026</td>
+            <td>Rp 50.000</td>
+            <td>04 Mei 2026</td>
+            <td style="text-align: center;"><span class="badge">Lunas</span></td>
+          </tr>
+          <tr>
+            <td style="text-align: center;">7</td>
+            <td><strong>Abdul Karim</strong></td>
+            <td>KUB Angsa Laut</td>
+            <td>Iuran Wajib Bulanan</td>
+            <td>Mei 2026</td>
+            <td>Rp 50.000</td>
+            <td style="color: var(--muted); font-style: italic;"> Belum Bayar </td>
+            <td style="text-align: center;"><span class="badge" style="background: #ffadad; color: #7a0000;">Belum Lunas</span></td>
+          </tr>
+
+          <!-- KUB Intimung Taka -->
+          <tr>
+            <td style="text-align: center;">8</td>
+            <td><strong>Adria Saputra</strong></td>
+            <td>KUB Intimung Taka</td>
+            <td>Iuran Wajib Bulanan</td>
+            <td>Mei 2026</td>
+            <td>Rp 50.000</td>
+            <td>12 Mei 2026</td>
+            <td style="text-align: center;"><span class="badge">Lunas</span></td>
+          </tr>
+
+          <!-- KUB Usaha Nelayan -->
+          <tr>
+            <td style="text-align: center;">9</td>
+            <td><strong>Sukardiman</strong></td>
+            <td>KUB Usaha Nelayan</td>
+            <td>Iuran Wajib Bulanan</td>
+            <td>Mei 2026</td>
+            <td>Rp 50.000</td>
+            <td style="color: var(--muted); font-style: italic;"> Belum Bayar </td>
+            <td style="text-align: center;"><span class="badge" style="background: #ffadad; color: #7a0000;">Belum Lunas</span></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <!-- PANEL 1: KUB Sumber Makmur -->
-    <div id="iuran-sm" class="tab-panel active" role="tabpanel">
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th style="width: 50px;">No</th>
-              <th>Nama Anggota</th>
-              <th>Jenis Iuran</th>
-              <th>Periode</th>
-              <th>Besaran (Rp)</th>
-              <th>Tanggal Bayar</th>
-              <th>Status Pembayaran</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td><strong>Junaidi</strong></td>
-              <td>Iuran Wajib Bulanan</td>
-              <td>Mei 2026</td>
-              <td>Rp 50.000</td>
-              <td>05 Mei 2026</td>
-              <td><span class="badge">Lunas</span></td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td><strong>Nanang</strong></td>
-              <td>Iuran Wajib Bulanan</td>
-              <td>Mei 2026</td>
-              <td>Rp 50.000</td>
-              <td>08 Mei 2026</td>
-              <td><span class="badge">Lunas</span></td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td><strong>Desir</strong></td>
-              <td>Iuran Wajib Bulanan</td>
-              <td>Mei 2026</td>
-              <td>Rp 50.000</td>
-              <td>10 Mei 2026</td>
-              <td><span class="badge">Lunas</span></td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td><strong>Supyan</strong></td>
-              <td>Iuran Wajib Bulanan</td>
-              <td>Mei 2026</td>
-              <td>Rp 50.000</td>
-              <td>-</td>
-              <td><span class="badge" style="background: #ffadad; color: #7a0000;">Belum Lunas</span></td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td><strong>Agus Efendi</strong></td>
-              <td>Iuran Pokok Awal</td>
-              <td>Mei 2026</td>
-              <td>Rp 150.000</td>
-              <td>02 Mei 2026</td>
-              <td><span class="badge">Lunas</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <!-- PANEL 2: KUB Angsa Laut -->
-    <div id="iuran-al" class="tab-panel" role="tabpanel">
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th style="width: 50px;">No</th>
-              <th>Nama Anggota</th>
-              <th>Jenis Iuran</th>
-              <th>Periode</th>
-              <th>Besaran (Rp)</th>
-              <th>Tanggal Bayar</th>
-              <th>Status Pembayaran</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td><strong>Muchsin</strong></td>
-              <td>Iuran Wajib Bulanan</td>
-              <td>Mei 2026</td>
-              <td>Rp 50.000</td>
-              <td>04 Mei 2026</td>
-              <td><span class="badge">Lunas</span></td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td><strong>Abdul Karim</strong></td>
-              <td>Iuran Wajib Bulanan</td>
-              <td>Mei 2026</td>
-              <td>Rp 50.000</td>
-              <td>-</td>
-              <td><span class="badge" style="background: #ffadad; color: #7a0000;">Belum Lunas</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <!-- PANEL 3: KUB Intimung Taka -->
-    <div id="iuran-it" class="tab-panel" role="tabpanel">
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th style="width: 50px;">No</th>
-              <th>Nama Anggota</th>
-              <th>Jenis Iuran</th>
-              <th>Periode</th>
-              <th>Besaran (Rp)</th>
-              <th>Tanggal Bayar</th>
-              <th>Status Pembayaran</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td><strong>Adria Saputra</strong></td>
-              <td>Iuran Wajib Bulanan</td>
-              <td>Mei 2026</td>
-              <td>Rp 50.000</td>
-              <td>12 Mei 2026</td>
-              <td><span class="badge">Lunas</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <!-- PANEL 4: KUB Usaha Nelayan -->
-    <div id="iuran-un" class="tab-panel" role="tabpanel">
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th style="width: 50px;">No</th>
-              <th>Nama Anggota</th>
-              <th>Jenis Iuran</th>
-              <th>Periode</th>
-              <th>Besaran (Rp)</th>
-              <th>Tanggal Bayar</th>
-              <th>Status Pembayaran</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td><strong>Sukardiman</strong></td>
-              <td>Iuran Wajib Bulanan</td>
-              <td>Mei 2026</td>
-              <td>Rp 50.000</td>
-              <td>-</td>
-              <td><span class="badge" style="background: #ffadad; color: #7a0000;">Belum Lunas</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+
     <hr style="border: none; border-top: 1px dashed var(--line); margin: 24px 0;">
-    <!-- Form Pengisian Iuran Baru -->
+
+    <!-- Form Input Cepat -->
     <div class="info-box" style="background: #ffffff;">
       <h4 style="font-size: 15px; margin-bottom: 12px; color: var(--sidebar); display: flex; align-items: center; gap: 8px;">
-        <i class="fa-solid fa-circle-plus" style="color: var(--primary);"></i> Input Setoran Iuran Baru
+        <i class="fa-solid fa-circle-plus" style="color: var(--primary);"></i> Tambah Baris Setoran Baru
       </h4>
-      <form onsubmit="event.preventDefault(); alert('Simulasi data iuran berhasil masuk database!');" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; align-items: end;">
+      <form onsubmit="event.preventDefault(); alert('Data iuran berhasil ditambahkan ke tabel!');" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; align-items: end;">
         <div>
-          <label style="font-size: 12px; font-weight: 500; color: var(--muted); display: block; margin-bottom: 4px;">Pilih Anggota KUB</label>
+          <label style="font-size: 12px; font-weight: 500; color: var(--muted); display: block; margin-bottom: 4px;">Anggota & KUB</label>
           <select style="width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--line); font-family: inherit; font-size: 13px; color: var(--text);">
             <option>Junaidi (Sumber Makmur)</option>
             <option>Supyan (Sumber Makmur)</option>
@@ -203,23 +155,24 @@
           </select>
         </div>
         <div>
-          <label style="font-size: 12px; font-weight: 500; color: var(--muted); display: block; margin-bottom: 4px;">Kategori Iuran</label>
+          <label style="font-size: 12px; font-weight: 500; color: var(--muted); display: block; margin-bottom: 4px;">Kategori</label>
           <select style="width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--line); font-family: inherit; font-size: 13px; color: var(--text);">
             <option>Iuran Wajib Bulanan</option>
             <option>Iuran Pokok / Registrasi</option>
-            <option>Iuran Sukarela (Sosial/Musibah)</option>
+            <option>Iuran Sukarela</option>
           </select>
         </div>
         <div>
-          <label style="font-size: 12px; font-weight: 500; color: var(--muted); display: block; margin-bottom: 4px;">Nominal (Rp)</label>
+          <label style="font-size: 12px; font-weight: 500; color: var(--muted); display: block; margin-bottom: 4px;">Jumlah nominal (Rp)</label>
           <input type="number" value="50000" style="width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--line); font-family: inherit; font-size: 13px;" required />
         </div>
         <div>
           <button type="submit" class="tab-btn active" style="width: 100%; margin: 0; min-height: 39px; font-weight: 500; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 6px;">
-            <i class="fa-solid fa-floppy-disk"></i> Simpan Record
+            <i class="fa-solid fa-floppy-disk"></i> Masukkan Data
           </button>
         </div>
       </form>
     </div>
+
   </div>
 </section>
