@@ -3,614 +3,304 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Dashboard Iuran - Kelompok Usaha Bersama (KUB)</title>
+    <title>Dashboard Iuran KUB Nelayan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #0277bd;
-            --secondary-color: #004c8c;
-            --light-bg: #f4f6f9;
-            --card-bg: #ffffff;
-            --text-dark: #333333;
-            --border-color: #e0e0e0;
-            --success-color: #2e7d32;
+        /* =========================================
+           RESET & BASE
+           ========================================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: #f0f4f8; color: #1e293b; }
+        .app-container { display: flex; min-height: 100vh; }
+
+        /* =========================================
+           SIDEBAR NAVIGATION
+           ========================================= */
+        .sidebar { width: 260px; background-color: #0f172a; color: white; display: flex; flex-direction: column; position: fixed; height: 100vh; }
+        .brand { padding: 25px 20px; background-color: #020617; text-align: center; border-bottom: 1px solid #1e293b; }
+        .brand h2 { font-size: 18px; color: #38bdf8; }
+        .brand p { font-size: 12px; color: #94a3b8; margin-top: 5px; }
+        
+        .nav-menu { list-style: none; padding: 20px 0; flex: 1; }
+        .nav-menu li { margin-bottom: 5px; }
+        .nav-menu a { display: flex; align-items: center; padding: 12px 20px; color: #cbd5e1; text-decoration: none; font-size: 14px; transition: 0.3s; cursor: pointer; border-left: 4px solid transparent; }
+        .nav-menu a:hover, .nav-menu a.active { background-color: #1e293b; color: white; border-left-color: #38bdf8; }
+
+        /* =========================================
+           MAIN CONTENT & HEADER
+           ========================================= */
+        .main-content { margin-left: 260px; flex: 1; padding: 30px; }
+        .header { background-color: #0284c7; color: white; padding: 20px 25px; border-radius: 8px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .header h1 { font-size: 20px; font-weight: 600; }
+
+        /* =========================================
+           TOMBOL DOWNLOAD & TOOLTIP (CSS ONLY)
+           ========================================= */
+        .btn-download {
+            position: relative; 
+            display: inline-flex; align-items: center; gap: 8px;
+            background-color: #10b981; color: white; padding: 10px 18px;
+            text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 600;
+            transition: all 0.3s ease; cursor: pointer; border: none;
         }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--light-bg);
-            color: var(--text-dark);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
+        .btn-download:hover { background-color: #059669; }
+
+        .btn-download::after {
+            content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+            background-color: #1e293b; color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px;
+            white-space: nowrap; opacity: 0; visibility: hidden; transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 10; font-weight: 400;
         }
-        .header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            text-align: center;
-            padding: 40px 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        .btn-download::before {
+            content: ""; position: absolute; bottom: 80%; left: 50%; transform: translateX(-50%);
+            border-width: 6px; border-style: solid; border-color: #1e293b transparent transparent transparent;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease;
         }
-        .header h1 {
-            margin: 0;
-            font-size: 2.2rem;
-            letter-spacing: 0.5px;
-        }
-        .header p {
-            margin: 10px 0 0 0;
-            font-size: 1.1rem;
-            opacity: 0.9;
+        .btn-download:hover::after { opacity: 1; visibility: visible; bottom: 130%; }
+        .btn-download:hover::before { opacity: 1; visibility: visible; bottom: 105%; }
+
+        /* =========================================
+           GRID LAYOUT (FORM KIRI, LIVE REPORT KANAN)
+           ========================================= */
+        .grid-container { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
+
+        /* =========================================
+           FORM SECTION
+           ========================================= */
+        .content-section { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .content-section h2 { font-size: 16px; margin-bottom: 20px; color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .active-kub-badge { background-color: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: #475569; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; font-size: 13px; outline: none; transition: 0.2s; }
+        .form-control:focus { border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1); }
+        
+        .btn-submit { background-color: #0284c7; color: white; border: none; padding: 12px 20px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 5px; }
+        .btn-submit:hover { background-color: #0369a1; }
+        .btn-submit:disabled { background-color: #94a3b8; cursor: not-allowed; }
+
+        #status-msg { margin-top: 15px; padding: 10px; border-radius: 6px; display: none; font-size: 13px; text-align: center; font-weight: 500; }
+        .status-success { background-color: #d1fae5; color: #065f46; border: 1px solid #34d399; }
+        .status-error { background-color: #fee2e2; color: #991b1b; border: 1px solid #f87171; }
+
+        /* =========================================
+           LIVE REPORT SECTION
+           ========================================= */
+        .live-badge { display: flex; align-items: center; gap: 6px; background-color: #fee2e2; color: #dc2626; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
+        .pulse-dot { width: 8px; height: 8px; background-color: #dc2626; border-radius: 50%; animation: pulse 1.5s infinite; }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(220, 38, 38, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
+        .history-list { list-style: none; overflow: hidden; margin-top: 10px; }
+        .history-item { 
+            padding: 12px; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 10px; 
+            display: flex; justify-content: space-between; align-items: center; background-color: #f8fafc;
+            animation: slideDownFadeIn 0.5s ease forwards;
         }
-        .summary-box {
-            background-color: var(--card-bg);
-            border-left: 5px solid var(--primary-color);
-            padding: 20px;
-            border-radius: 6px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
+        @keyframes slideDownFadeIn {
+            0% { opacity: 0; transform: translateY(-15px); background-color: #dbeafe; }
+            100% { opacity: 1; transform: translateY(0); background-color: #f8fafc; }
         }
-        .summary-box h3 {
-            margin-top: 0;
-            color: var(--secondary-color);
-        }
-        .kub-card {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            margin-bottom: 40px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-        }
-        .kub-title {
-            background-color: #edf5fa;
-            padding: 20px;
-            margin: 0;
-            font-size: 1.4rem;
-            color: var(--secondary-color);
-            border-bottom: 2px solid #b3e5fc;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .kub-meta {
-            font-size: 0.85rem;
-            background-color: var(--primary-color);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-weight: normal;
-        }
-        .kub-details {
-            padding: 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            background-color: #fafafa;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.9rem;
-        }
-        .detail-item strong {
-            color: #555;
-        }
-        .table-responsive {
-            overflow-x: auto;
-            padding: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 0.95rem;
-        }
-        th {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 12px 15px;
-            font-weight: 600;
-        }
-        td {
-            padding: 12px 15px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        tr:hover {
-            background-color: #f1f5f9;
-        }
-        .badge-ketua {
-            background-color: #ffebee;
-            color: #c62828;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 0.8rem;
-        }
-        .badge-sekretaris {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 0.8rem;
-        }
-        .badge-bendahara {
-            background-color: #fff3e0;
-            color: #ef6c00;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 0.8rem;
-        }
-        .text-right {
-            text-align: right;
-        }
-        .text-center {
-            text-align: center;
-        }
-        .footer {
-            text-align: center;
-            padding: 30px 20px;
-            color: #777;
-            font-size: 0.85rem;
-            border-top: 1px solid var(--border-color);
-            margin-top: 5px;
-        }
+        .item-info strong { display: block; font-size: 13px; color: #0f172a; margin-bottom: 2px; }
+        .item-info span { font-size: 11px; color: #64748b; }
+        .item-amount { font-size: 14px; font-weight: 700; color: #10b981; }
+
         @media (max-width: 768px) {
-            .kub-title {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+            .sidebar { display: none; } /* Simplified for snippet */
+            .main-content { margin-left: 0; }
+            .grid-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Manajemen Iuran & Profil Kelompok Usaha Bersama (KUB)</h1>
-        <p>Rekapitulasi Administrasi Anggota Nelayan dan Pelaku Usaha Perikanan</p>
+
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="brand">
+                <h2>Iuran KUB</h2>
+                <p>Sistem Pencatatan Iuran</p>
+            </div>
+            <ul class="nav-menu">
+                <li><a class="nav-link active" data-kub="KUB Sumber Makmur">🌊 KUB Sumber Makmur</a></li>
+                <li><a class="nav-link" data-kub="KUB Angsa Laut">🚢 KUB Angsa Laut</a></li>
+                <li><a class="nav-link" data-kub="KUB Intimung Taka">⭐ KUB Intimung Taka</a></li>
+                <li><a class="nav-link" data-kub="KUB Usaha Bersama">🤝 KUB Usaha Bersama</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <h1 id="header-title">Dashboard Iuran: KUB Sumber Makmur</h1>
+                <a href="#" id="btn-excel-download" class="btn-download" data-tooltip="Klik untuk mengunduh Laporan Iuran format .xlsx" target="_blank">
+                    📥 Unduh Rekap
+                </a>
+            </header>
+
+            <div class="grid-container">
+                <div class="content-section">
+                    <h2>
+                        ➕ Form Setor Iuran
+                        <span class="active-kub-badge" id="badge-kub">Tujuan: KUB Sumber Makmur</span>
+                    </h2>
+                    
+                    <form id="iuranForm">
+                        <input type="hidden" id="nama_kub" name="nama_kub" value="KUB Sumber Makmur">
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Waktu & Tanggal Pengisian</label>
+                                <input type="datetime-local" id="waktu_tanggal" name="waktu_tanggal" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Nama Penyetor / Pengisi</label>
+                                <input type="text" id="nama_pengisi" name="nama_pengisi" class="form-control" placeholder="Contoh: Budi Santoso" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nominal Iuran (Rp)</label>
+                            <input type="number" id="nominal" name="nominal" class="form-control" placeholder="Contoh: 50000" min="1000" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Keterangan</label>
+                            <input type="text" id="keterangan" name="keterangan" class="form-control" placeholder="Contoh: Iuran wajib bulan Mei" required>
+                        </div>
+
+                        <button type="submit" id="submitBtn" class="btn-submit">Kirim Data Iuran ke Spreadsheet</button>
+                        <div id="status-msg"></div>
+                    </form>
+                </div>
+
+                <div class="content-section">
+                    <h2>
+                        Riwayat Setoran
+                        <div class="live-badge">
+                            <div class="pulse-dot"></div>
+                            LIVE
+                        </div>
+                    </h2>
+                    <ul class="history-list" id="live-feed">
+                        <li class="history-item">
+                            <div class="item-info">
+                                <strong>Menunggu setoran...</strong>
+                                <span>Sistem siap menerima data.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </main>
     </div>
-    <div class="container">
-        <div class="summary-box">
-            <h3>Catatan Administrasi</h3>
-            <p>Halaman ini menampilkan struktur keanggotaan dan rancangan iuran berkala (Simpanan Pokok & Wajib) bagi 4 KUB binaan Kementerian Kelautan dan Perikanan. Nilai besaran simpanan dirancang secara proporsional sesuai dengan skala omset usaha masing-masing wilayah guna menunjang kemandirian dan pemeliharaan aset kelompok.</p>
-        </div>
-        <div class="kub-card">
-            <div class="kub-title">
-                <span>1. KUB SUMBER MAKMUR</span>
-                <span class="kub-meta">Reg: 411.61/022/433.105/2013</span>
-            </div>
-            <div class="kub-details">
-                <div class="detail-item"><strong>Lokasi:</strong> Desa Klampis Timur, Kec. Klampis, Kab. Bangkalan</div>
-                <div class="detail-item"><strong>Penyuluh:</strong> Moh. Sulton, S.Si (BPPP Banyuwangi)</div>
-                <div class="detail-item"><strong>Komoditas:</strong> Alat Tangkap Jaring Payang</div>
-            </div>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="text-center" style="width: 5%;">No</th>
-                            <th>Nama Anggota</th>
-                            <th>Jabatan</th>
-                            <th class="text-right">Simpanan Pokok (Awal)</th>
-                            <th class="text-right">Simpanan Wajib (Bulanan)</th>
-                            <th class="text-center">Keterangan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-center">1</td>
-                            <td><strong>Junaidi</strong></td>
-                            <td><span class="badge-ketua">Ketua</span></td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">2</td>
-                            <td>Nanang</td>
-                            <td><span class="badge-sekretaris">Sekretaris</span></td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">3</td>
-                            <td>Desir</td>
-                            <td><span class="badge-bendahara">Bendahara</span></td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">4</td>
-                            <td>Supyan</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">5</td>
-                            <td>Agus Efendi</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">6</td>
-                            <td>Hoirul Anam</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">7</td>
-                            <td>Efendi</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">8</td>
-                            <td>Muzakki</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">9</td>
-                            <td>Hanif</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">10</td>
-                            <td>M Amin</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="kub-card">
-            <div class="kub-title">
-                <span>2. KUB INTIMUNG TAKA</span>
-                <span class="kub-meta">Reg: 1.2.65.01.0814.0914</span>
-            </div>
-            <div class="kub-details">
-                <div class="detail-item"><strong>Lokasi:</strong> RT 06 Desa Bunyu Barat, Kec. Bunyu, Kab. Bulungan</div>
-                <div class="detail-item"><strong>Penyuluh:</strong> Hariyono, S.Pi (BPPP Bitung)</div>
-                <div class="detail-item"><strong>Komoditas:</strong> Penangkapan Kerapu, Kakap, Gill Nets, Pacing Tonda</div>
-            </div>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="text-center" style="width: 5%;">No</th>
-                            <th>Nama Anggota</th>
-                            <th>Jabatan</th>
-                            <th class="text-right">Simpanan Pokok (Awal)</th>
-                            <th class="text-right">Simpanan Wajib (Bulanan)</th>
-                            <th class="text-center">Keterangan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-center">1</td>
-                            <td><strong>Adria Saputra</strong></td>
-                            <td><span class="badge-ketua">Ketua</span></td>
-                            <td class="text-right">Rp 150.000</td>
-                            <td class="text-right">Rp 25.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">2</td>
-                            <td>Nanang Jainal M.</td>
-                            <td><span class="badge-sekretaris">Sekretaris</span></td>
-                            <td class="text-right">Rp 150.000</td>
-                            <td class="text-right">Rp 25.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">3</td>
-                            <td>Sukirman</td>
-                            <td><span class="badge-bendahara">Bendahara</span></td>
-                            <td class="text-right">Rp 150.000</td>
-                            <td class="text-right">Rp 25.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">4</td>
-                            <td>Achmad Yani</td>
-                            <td>Seksi Sarpras</td>
-                            <td class="text-right">Rp 150.000</td>
-                            <td class="text-right">Rp 25.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">5</td>
-                            <td>Achmad Lubis</td>
-                            <td>Seksi Produksi</td>
-                            <td class="text-right">Rp 150.000</td>
-                            <td class="text-right">Rp 25.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">6</td>
-                            <td>Hamidun</td>
-                            <td>Seksi Pemasaran</td>
-                            <td class="text-right">Rp 150.000</td>
-                            <td class="text-right">Rp 25.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">7</td>
-                            <td>M. Noor</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 150.000</td>
-                            <td class="text-right">Rp 25.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">8</td>
-                            <td>Mahmud</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 150.000</td>
-                            <td class="text-right">Rp 25.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">9</td>
-                            <td>Nasrun</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 150.000</td>
-                            <td class="text-right">Rp 25.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">10</td>
-                            <td>Saparudin</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 150.000</td>
-                            <td class="text-right">Rp 25.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="kub-card">
-            <div class="kub-title">
-                <span>3. KUB ANGSA LAUT 01</span>
-                <span class="kub-meta">Reg: 1.2.93.01.0223.0223</span>
-            </div>
-            <div class="kub-details">
-                <div class="detail-item"><strong>Lokasi:</strong> Kelurahan Samkai, Distrik Merauke, Kab. Merauke</div>
-                <div class="detail-item"><strong>Penyuluh:</strong> Ardin Arafah Randan Sau, S.St.Pi (BPPP Ambon)</div>
-                <div class="detail-item"><strong>Komoditas:</strong> Kakap, Kerapu, Tenggiri, Gulama (Jaring Trammel Net)</div>
-            </div>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="text-center" style="width: 5%;">No</th>
-                            <th>Nama Anggota</th>
-                            <th>Jabatan</th>
-                            <th class="text-right">Simpanan Pokok (Awal)</th>
-                            <th class="text-right">Simpanan Wajib (Bulanan)</th>
-                            <th class="text-center">Keterangan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-center">1</td>
-                            <td><strong>Muchsin</strong></td>
-                            <td><span class="badge-ketua">Ketua</span></td>
-                            <td class="text-right">Rp 120.000</td>
-                            <td class="text-right">Rp 15.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">2</td>
-                            <td>Abdul Karim</td>
-                            <td><span class="badge-sekretaris">Sekretaris</span></td>
-                            <td class="text-right">Rp 120.000</td>
-                            <td class="text-right">Rp 15.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">3</td>
-                            <td>Zulkarnaen Arifin</td>
-                            <td><span class="badge-bendahara">Bendahara</span></td>
-                            <td class="text-right">Rp 120.000</td>
-                            <td class="text-right">Rp 15.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">4</td>
-                            <td>Arifin</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 120.000</td>
-                            <td class="text-right">Rp 15.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">5</td>
-                            <td>Sudirman A</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 120.000</td>
-                            <td class="text-right">Rp 15.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">6</td>
-                            <td>Nasir DG Mamu</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 120.000</td>
-                            <td class="text-right">Rp 15.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">7</td>
-                            <td>Alimuddin</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 120.000</td>
-                            <td class="text-right">Rp 15.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">8</td>
-                            <td>Mustafa</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 120.000</td>
-                            <td class="text-right">Rp 15.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">9</td>
-                            <td>Manai</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 120.000</td>
-                            <td class="text-right">Rp 15.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">10</td>
-                            <td>Amiruddin</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 120.000</td>
-                            <td class="text-right">Rp 15.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="kub-card">
-            <div class="kub-title">
-                <span>4. KUB USAHA NELAYAN</span>
-                <span class="kub-meta">Reg: 1.2.74.02.17.0215.0516</span>
-            </div>
-            <div class="kub-details">
-                <div class="detail-item"><strong>Lokasi:</strong> Desa Watusa, Kec. Puriala, Kab. Konawe</div>
-                <div class="detail-item"><strong>Penyuluh:</strong> Suhardin, S.ST.Pi (BPPBAP3 Maros)</div>
-                <div class="detail-item"><strong>Komoditas:</strong> Penangkapan Ikan Rawa PUD (Perairan Umum Daratan)</div>
-            </div>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="text-center" style="width: 5%;">No</th>
-                            <th>Nama Anggota</th>
-                            <th>Jabatan</th>
-                            <th class="text-right">Simpanan Pokok (Awal)</th>
-                            <th class="text-right">Simpanan Wajib (Bulanan)</th>
-                            <th class="text-center">Keterangan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-center">1</td>
-                            <td><strong>Sukardiman</strong></td>
-                            <td><span class="badge-ketua">Ketua</span></td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">2</td>
-                            <td>Hasan</td>
-                            <td><span class="badge-sekretaris">Sekretaris</span></td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">3</td>
-                            <td>Madi</td>
-                            <td><span class="badge-bendahara">Bendahara</span></td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">4</td>
-                            <td>Anto</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">5</td>
-                            <td>Muh Ansar</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">6</td>
-                            <td>Arifin K</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">7</td>
-                            <td>Arfa</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">8</td>
-                            <td>Kambe</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">9</td>
-                            <td>Lakali</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">10</td>
-                            <td>Sukaryo</td>
-                            <td>Anggota</td>
-                            <td class="text-right">Rp 100.000</td>
-                            <td class="text-right">Rp 20.000</td>
-                            <td class="text-center">Aktif</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="footer">
-        <p>&copy; 2026 Sistem Administrasi Perikanan - Dashboard KUB Mandiri. Semua data diselaraskan dengan profil penyuluhan KKP.</p>
-    </div>
+
+    <script>
+        // ==============================================================================
+        // 1. LINK GOOGLE APPS SCRIPT & SPREADSHEET (DARI USER)
+        // ==============================================================================
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxiMIkT3ceXB4le1KNLJ2byxml17x4ecuHNdK3M28gG21HMU3TGYAPK_uX1egGEQqfOzw/exec'; 
+        const SHEET_ID = '1RgyVkhFbBeGEL-x9O7iiVdl_yShqwQwRtNa8gM0AOlo';
+
+        // Set Link Unduh Otomatis ke Spreadsheet Tersebut
+        // Catatan: GID "0" biasanya adalah Sheet pertama (Sheet1/Data_Iuran).
+        const btnExcel = document.getElementById('btn-excel-download');
+        btnExcel.href = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=xlsx&gid=0`;
+
+        // ==============================================================================
+        // 2. LOGIKA NAVIGASI (SIDEBAR)
+        // ==============================================================================
+        const navLinks = document.querySelectorAll('.nav-link');
+        const headerTitle = document.getElementById('header-title');
+        const badgeKub = document.getElementById('badge-kub');
+        const inputNamaKub = document.getElementById('nama_kub');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                const selectedKUB = this.getAttribute('data-kub');
+                headerTitle.innerText = "Dashboard Iuran: " + selectedKUB;
+                badgeKub.innerText = "Tujuan: " + selectedKUB;
+                inputNamaKub.value = selectedKUB;
+            });
+        });
+
+        // Set Datetime Local otomatis ke waktu sekarang
+        const setWaktuSekarang = () => {
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            document.getElementById('waktu_tanggal').value = now.toISOString().slice(0,16);
+        };
+        setWaktuSekarang();
+
+        // ==============================================================================
+        // 3. LOGIKA PENGIRIMAN FORMULIR (POST KE APPS SCRIPT)
+        // ==============================================================================
+        const form = document.getElementById('iuranForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const statusMsg = document.getElementById('status-msg');
+        const feedContainer = document.getElementById('live-feed');
+
+        // Fungsi Format Uang
+        const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(angka);
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Mengirim data...';
+            
+            // Simpan data untuk dimunculkan di Live Report setelah berhasil
+            const namaPenanda = document.getElementById('nama_pengisi').value;
+            const kubPenanda = document.getElementById('nama_kub').value;
+            const ketPenanda = document.getElementById('keterangan').value;
+            const nominalPenanda = document.getElementById('nominal').value;
+
+            const formData = new FormData(form);
+            const data = new URLSearchParams();
+            for (const pair of formData) { data.append(pair[0], pair[1]); }
+
+            fetch(SCRIPT_URL, { method: 'POST', body: data })
+            .then(response => response.json())
+            .then(result => {
+                if(result.result === "success") {
+                    statusMsg.className = 'status-success';
+                    statusMsg.innerText = '✅ Data berhasil terkirim ke Google Sheets!';
+                    
+                    // Tambahkan ke Live Report List
+                    const waktuSekarang = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+                    const li = document.createElement('li');
+                    li.className = 'history-item';
+                    li.innerHTML = `
+                        <div class="item-info">
+                            <strong>${namaPenanda} - ${kubPenanda}</strong>
+                            <span>${ketPenanda} • Baru saja (${waktuSekarang})</span>
+                        </div>
+                        <div class="item-amount">+ ${formatRupiah(nominalPenanda)}</div>
+                    `;
+                    feedContainer.prepend(li);
+                    
+                    // Bersihkan form
+                    form.reset();
+                    setWaktuSekarang();
+                    document.getElementById('nama_kub').value = kubPenanda; // Kembalikan value hidden
+                } else { throw new Error("Gagal"); }
+            })
+            .catch(error => {
+                statusMsg.className = 'status-error';
+                statusMsg.innerText = '❌ Terjadi kesalahan koneksi ke Spreadsheet.';
+            })
+            .finally(() => {
+                statusMsg.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Kirim Data Iuran ke Spreadsheet';
+                setTimeout(() => { statusMsg.style.display = 'none'; }, 5000);
+            });
+        });
+    </script>
 </body>
 </html>
