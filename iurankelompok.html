@@ -1,417 +1,616 @@
-<section id="iuran" class="section">
-  <div class="card">
-    <h2 class="section-title">
-      <i class="fa-solid fa-hand-holding-dollar" style="color: var(--primary); margin-right: 8px;"></i>
-      Rekapitulasi Iuran Anggota KUB
-    </h2>
-    <p class="section-desc">Daftar terpadu pembayaran iuran wajib, pokok, dan sukarela dari seluruh kelompok usaha bersama.</p>
-    
-    <!-- Ringkasan Kas -->
-    <div class="top-actions" style="margin-bottom: 20px; gap: 12px;">
-      <div class="pill" style="background: #e8f8f5; border-color: #a3e4d7;">
-        <i class="fa-solid fa-wallet" style="color: var(--primary-dark);"></i> 
-        <span><strong>Total Iuran Masuk:</strong> Rp 4.850.000</span>
-      </div>
-      <div class="pill" style="background: #fef9e7; border-color: #f9e79f;">
-        <i class="fa-solid fa-triangle-exclamation" style="color: #f39c12;"></i> 
-        <span><strong>Total Tunggakan:</strong> Rp 350.000</span>
-      </div>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Dashboard Iuran - Kelompok Usaha Bersama (KUB)</title>
+    <style>
+        :root {
+            --primary-color: #0277bd;
+            --secondary-color: #004c8c;
+            --light-bg: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-dark: #333333;
+            --border-color: #e0e0e0;
+            --success-color: #2e7d32;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            letter-spacing: 0.5px;
+        }
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .summary-box {
+            background-color: var(--card-bg);
+            border-left: 5px solid var(--primary-color);
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        .summary-box h3 {
+            margin-top: 0;
+            color: var(--secondary-color);
+        }
+        .kub-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        .kub-title {
+            background-color: #edf5fa;
+            padding: 20px;
+            margin: 0;
+            font-size: 1.4rem;
+            color: var(--secondary-color);
+            border-bottom: 2px solid #b3e5fc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .kub-meta {
+            font-size: 0.85rem;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: normal;
+        }
+        .kub-details {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            background-color: #fafafa;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+        .detail-item strong {
+            color: #555;
+        }
+        .table-responsive {
+            overflow-x: auto;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 15px;
+            font-weight: 600;
+        }
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+        .badge-ketua {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        .badge-sekretaris {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        .badge-bendahara {
+            background-color: #fff3e0;
+            color: #ef6c00;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #777;
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 5px;
+        }
+        @media (max-width: 768px) {
+            .kub-title {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Manajemen Iuran & Profil Kelompok Usaha Bersama (KUB)</h1>
+        <p>Rekapitulasi Administrasi Anggota Nelayan dan Pelaku Usaha Perikanan</p>
     </div>
-
-    <!-- Tabel Utama yang Rapi -->
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th style="width: 50px; text-align: center;">No</th>
-            <th>Nama Anggota</th>
-            <th>Nama KUB</th>
-            <th>Jenis Iuran</th>
-            <th>Periode</th>
-            <th>Besaran (Rp)</th>
-            <th>Tanggal Bayar</th>
-            <th style="text-align: center;">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- KUB Sumber Makmur -->
-          <tr>
-            <td style="text-align: center;">1</td>
-            <td><strong>Junaidi</strong></td>
-            <td>KUB Sumber Makmur</td>
-            <td>Iuran Wajib Bulanan</td>
-            <td>Mei 2026</td>
-            <td>Rp 50.000</td>
-            <td>05 Mei 2026</td>
-            <td style="text-align: center;"><span class="badge">Lunas</span></td>
-          </tr>
-          <tr>
-            <td style="text-align: center;">2</td>
-            <td><strong>Nanang</strong></td>
-            <td>KUB Sumber Makmur</td>
-            <td>Iuran Wajib Bulanan</td>
-            <td>Mei 2026</td>
-            <td>Rp 50.000</td>
-            <td>08 Mei 2026</td>
-            <td style="text-align: center;"><span class="badge">Lunas</span></td>
-          </tr>
-          <tr>
-            <td style="text-align: center;">3</td>
-            <td><strong>Desir</strong></td>
-            <td>KUB Sumber Makmur</td>
-            <td>Iuran Wajib Bulanan</td>
-            <td>Mei 2026</td>
-            <td>Rp 50.000</td>
-            <td>10 Mei 2026</td>
-            <td style="text-align: center;"><span class="badge">Lunas</span></td>
-          </tr>
-          <tr>
-            <td style="text-align: center;">4</td>
-            <td><strong>Supyan</strong></td>
-            <td>KUB Sumber Makmur</td>
-            <td>Iuran Wajib Bulanan</td>
-            <td>Mei 2026</td>
-            <td>Rp 50.000</td>
-            <td style="color: var(--muted); font-style: italic;"> Belum Bayar </td>
-            <td style="text-align: center;"><span class="badge" style="background: #ffadad; color: #7a0000;">Belum Lunas</span></td>
-          </tr>
-          <tr>
-            <td style="text-align: center;">5</td>
-            <td><strong>Agus Efendi</strong></td>
-            <td>KUB Sumber Makmur</td>
-            <td>Iuran Pokok Awal</td>
-            <td>Mei 2026</td>
-            <td>Rp 150.000</td>
-            <td>02 Mei 2026</td>
-            <td style="text-align: center;"><span class="badge">Lunas</span></td>
-          </tr>
-
-          <!-- KUB Angsa Laut -->
-          <tr>
-            <td style="text-align: center;">6</td>
-            <td><strong>Muchsin</strong></td>
-            <td>KUB Angsa Laut</td>
-            <td>Iuran Wajib Bulanan</td>
-            <td>Mei 2026</td>
-            <td>Rp 50.000</td>
-            <td>04 Mei 2026</td>
-            <td style="text-align: center;"><span class="badge">Lunas</span></td>
-          </tr>
-          <tr>
-            <td style="text-align: center;">7</td>
-            <td><strong>Abdul Karim</strong></td>
-            <td>KUB Angsa Laut</td>
-            <td>Iuran Wajib Bulanan</td>
-            <td>Mei 2026</td>
-            <td>Rp 50.000</td>
-            <td style="color: var(--muted); font-style: italic;"> Belum Bayar </td>
-            <td style="text-align: center;"><span class="badge" style="background: #ffadad; color: #7a0000;">Belum Lunas</span></td>
-          </tr>
-
-          <!-- KUB Intimung Taka -->
-          <tr>
-            <td style="text-align: center;">8</td>
-            <td><strong>Adria Saputra</strong></td>
-            <td>KUB Intimung Taka</td>
-            <td>Iuran Wajib Bulanan</td>
-            <td>Mei 2026</td>
-            <td>Rp 50.000</td>
-            <td>12 Mei 2026</td>
-            <td style="text-align: center;"><span class="badge">Lunas</span></td>
-          </tr>
-
-          <!-- KUB Usaha Nelayan -->
-          <tr>
-            <td style="text-align: center;">9</td>
-            <td><strong>Sukardiman</strong></td>
-            <td>KUB Usaha Nelayan</td>
-            <td>Iuran Wajib Bulanan</td>
-            <td>Mei 2026</td>
-            <td>Rp 50.000</td>
-            <td style="color: var(--muted); font-style: italic;"> Belum Bayar </td>
-            <td style="text-align: center;"><span class="badge" style="background: #ffadad; color: #7a0000;">Belum Lunas</span></td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="container">
+        <div class="summary-box">
+            <h3>Catatan Administrasi</h3>
+            <p>Halaman ini menampilkan struktur keanggotaan dan rancangan iuran berkala (Simpanan Pokok & Wajib) bagi 4 KUB binaan Kementerian Kelautan dan Perikanan. Nilai besaran simpanan dirancang secara proporsional sesuai dengan skala omset usaha masing-masing wilayah guna menunjang kemandirian dan pemeliharaan aset kelompok.</p>
+        </div>
+        <div class="kub-card">
+            <div class="kub-title">
+                <span>1. KUB SUMBER MAKMUR</span>
+                <span class="kub-meta">Reg: 411.61/022/433.105/2013</span>
+            </div>
+            <div class="kub-details">
+                <div class="detail-item"><strong>Lokasi:</strong> Desa Klampis Timur, Kec. Klampis, Kab. Bangkalan</div>
+                <div class="detail-item"><strong>Penyuluh:</strong> Moh. Sulton, S.Si (BPPP Banyuwangi)</div>
+                <div class="detail-item"><strong>Komoditas:</strong> Alat Tangkap Jaring Payang</div>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width: 5%;">No</th>
+                            <th>Nama Anggota</th>
+                            <th>Jabatan</th>
+                            <th class="text-right">Simpanan Pokok (Awal)</th>
+                            <th class="text-right">Simpanan Wajib (Bulanan)</th>
+                            <th class="text-center">Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">1</td>
+                            <td><strong>Junaidi</strong></td>
+                            <td><span class="badge-ketua">Ketua</span></td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">2</td>
+                            <td>Nanang</td>
+                            <td><span class="badge-sekretaris">Sekretaris</span></td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">3</td>
+                            <td>Desir</td>
+                            <td><span class="badge-bendahara">Bendahara</span></td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">4</td>
+                            <td>Supyan</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">5</td>
+                            <td>Agus Efendi</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">6</td>
+                            <td>Hoirul Anam</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">7</td>
+                            <td>Efendi</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">8</td>
+                            <td>Muzakki</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">9</td>
+                            <td>Hanif</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">10</td>
+                            <td>M Amin</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="kub-card">
+            <div class="kub-title">
+                <span>2. KUB INTIMUNG TAKA</span>
+                <span class="kub-meta">Reg: 1.2.65.01.0814.0914</span>
+            </div>
+            <div class="kub-details">
+                <div class="detail-item"><strong>Lokasi:</strong> RT 06 Desa Bunyu Barat, Kec. Bunyu, Kab. Bulungan</div>
+                <div class="detail-item"><strong>Penyuluh:</strong> Hariyono, S.Pi (BPPP Bitung)</div>
+                <div class="detail-item"><strong>Komoditas:</strong> Penangkapan Kerapu, Kakap, Gill Nets, Pacing Tonda</div>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width: 5%;">No</th>
+                            <th>Nama Anggota</th>
+                            <th>Jabatan</th>
+                            <th class="text-right">Simpanan Pokok (Awal)</th>
+                            <th class="text-right">Simpanan Wajib (Bulanan)</th>
+                            <th class="text-center">Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">1</td>
+                            <td><strong>Adria Saputra</strong></td>
+                            <td><span class="badge-ketua">Ketua</span></td>
+                            <td class="text-right">Rp 150.000</td>
+                            <td class="text-right">Rp 25.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">2</td>
+                            <td>Nanang Jainal M.</td>
+                            <td><span class="badge-sekretaris">Sekretaris</span></td>
+                            <td class="text-right">Rp 150.000</td>
+                            <td class="text-right">Rp 25.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">3</td>
+                            <td>Sukirman</td>
+                            <td><span class="badge-bendahara">Bendahara</span></td>
+                            <td class="text-right">Rp 150.000</td>
+                            <td class="text-right">Rp 25.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">4</td>
+                            <td>Achmad Yani</td>
+                            <td>Seksi Sarpras</td>
+                            <td class="text-right">Rp 150.000</td>
+                            <td class="text-right">Rp 25.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">5</td>
+                            <td>Achmad Lubis</td>
+                            <td>Seksi Produksi</td>
+                            <td class="text-right">Rp 150.000</td>
+                            <td class="text-right">Rp 25.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">6</td>
+                            <td>Hamidun</td>
+                            <td>Seksi Pemasaran</td>
+                            <td class="text-right">Rp 150.000</td>
+                            <td class="text-right">Rp 25.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">7</td>
+                            <td>M. Noor</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 150.000</td>
+                            <td class="text-right">Rp 25.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">8</td>
+                            <td>Mahmud</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 150.000</td>
+                            <td class="text-right">Rp 25.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">9</td>
+                            <td>Nasrun</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 150.000</td>
+                            <td class="text-right">Rp 25.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">10</td>
+                            <td>Saparudin</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 150.000</td>
+                            <td class="text-right">Rp 25.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="kub-card">
+            <div class="kub-title">
+                <span>3. KUB ANGSA LAUT 01</span>
+                <span class="kub-meta">Reg: 1.2.93.01.0223.0223</span>
+            </div>
+            <div class="kub-details">
+                <div class="detail-item"><strong>Lokasi:</strong> Kelurahan Samkai, Distrik Merauke, Kab. Merauke</div>
+                <div class="detail-item"><strong>Penyuluh:</strong> Ardin Arafah Randan Sau, S.St.Pi (BPPP Ambon)</div>
+                <div class="detail-item"><strong>Komoditas:</strong> Kakap, Kerapu, Tenggiri, Gulama (Jaring Trammel Net)</div>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width: 5%;">No</th>
+                            <th>Nama Anggota</th>
+                            <th>Jabatan</th>
+                            <th class="text-right">Simpanan Pokok (Awal)</th>
+                            <th class="text-right">Simpanan Wajib (Bulanan)</th>
+                            <th class="text-center">Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">1</td>
+                            <td><strong>Muchsin</strong></td>
+                            <td><span class="badge-ketua">Ketua</span></td>
+                            <td class="text-right">Rp 120.000</td>
+                            <td class="text-right">Rp 15.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">2</td>
+                            <td>Abdul Karim</td>
+                            <td><span class="badge-sekretaris">Sekretaris</span></td>
+                            <td class="text-right">Rp 120.000</td>
+                            <td class="text-right">Rp 15.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">3</td>
+                            <td>Zulkarnaen Arifin</td>
+                            <td><span class="badge-bendahara">Bendahara</span></td>
+                            <td class="text-right">Rp 120.000</td>
+                            <td class="text-right">Rp 15.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">4</td>
+                            <td>Arifin</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 120.000</td>
+                            <td class="text-right">Rp 15.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">5</td>
+                            <td>Sudirman A</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 120.000</td>
+                            <td class="text-right">Rp 15.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">6</td>
+                            <td>Nasir DG Mamu</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 120.000</td>
+                            <td class="text-right">Rp 15.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">7</td>
+                            <td>Alimuddin</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 120.000</td>
+                            <td class="text-right">Rp 15.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">8</td>
+                            <td>Mustafa</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 120.000</td>
+                            <td class="text-right">Rp 15.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">9</td>
+                            <td>Manai</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 120.000</td>
+                            <td class="text-right">Rp 15.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">10</td>
+                            <td>Amiruddin</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 120.000</td>
+                            <td class="text-right">Rp 15.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="kub-card">
+            <div class="kub-title">
+                <span>4. KUB USAHA NELAYAN</span>
+                <span class="kub-meta">Reg: 1.2.74.02.17.0215.0516</span>
+            </div>
+            <div class="kub-details">
+                <div class="detail-item"><strong>Lokasi:</strong> Desa Watusa, Kec. Puriala, Kab. Konawe</div>
+                <div class="detail-item"><strong>Penyuluh:</strong> Suhardin, S.ST.Pi (BPPBAP3 Maros)</div>
+                <div class="detail-item"><strong>Komoditas:</strong> Penangkapan Ikan Rawa PUD (Perairan Umum Daratan)</div>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width: 5%;">No</th>
+                            <th>Nama Anggota</th>
+                            <th>Jabatan</th>
+                            <th class="text-right">Simpanan Pokok (Awal)</th>
+                            <th class="text-right">Simpanan Wajib (Bulanan)</th>
+                            <th class="text-center">Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">1</td>
+                            <td><strong>Sukardiman</strong></td>
+                            <td><span class="badge-ketua">Ketua</span></td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">2</td>
+                            <td>Hasan</td>
+                            <td><span class="badge-sekretaris">Sekretaris</span></td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">3</td>
+                            <td>Madi</td>
+                            <td><span class="badge-bendahara">Bendahara</span></td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">4</td>
+                            <td>Anto</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">5</td>
+                            <td>Muh Ansar</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">6</td>
+                            <td>Arifin K</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">7</td>
+                            <td>Arfa</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">8</td>
+                            <td>Kambe</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">9</td>
+                            <td>Lakali</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">10</td>
+                            <td>Sukaryo</td>
+                            <td>Anggota</td>
+                            <td class="text-right">Rp 100.000</td>
+                            <td class="text-right">Rp 20.000</td>
+                            <td class="text-center">Aktif</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-
-    <hr style="border: none; border-top: 1px dashed var(--line); margin: 24px 0;">
-
-    <!-- Form Input Cepat -->
-    <div class="info-box" style="background: #ffffff;">
-      <h4 style="font-size: 15px; margin-bottom: 12px; color: var(--sidebar); display: flex; align-items: center; gap: 8px;">
-        <i class="fa-solid fa-circle-plus" style="color: var(--primary);"></i> Tambah Baris Setoran Baru
-      </h4>
-      <form onsubmit="event.preventDefault(); alert('Data iuran berhasil ditambahkan ke tabel!');" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; align-items: end;">
-        <div>
-          <label style="font-size: 12px; font-weight: 500; color: var(--muted); display: block; margin-bottom: 4px;">Anggota & KUB</label>
-          <select style="width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--line); font-family: inherit; font-size: 13px; color: var(--text);">
-            <option>Junaidi (Sumber Makmur)</option>
-            <option>Supyan (Sumber Makmur)</option>
-            <option>Muchsin (Angsa Laut)</option>
-            <option>Abdul Karim (Angsa Laut)</option>
-            <option>Adria Saputra (Intimung Taka)</option>
-            <option>Sukardiman (Usaha Nelayan)</option>
-          </select>
-        </div>
-        <div>
-          <label style="font-size: 12px; font-weight: 500; color: var(--muted); display: block; margin-bottom: 4px;">Kategori</label>
-          <select style="width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--line); font-family: inherit; font-size: 13px; color: var(--text);">
-            <option>Iuran Wajib Bulanan</option>
-            <option>Iuran Pokok / Registrasi</option>
-            <option>Iuran Sukarela</option>
-          </select>
-        </div>
-        <div>
-          <label style="font-size: 12px; font-weight: 500; color: var(--muted); display: block; margin-bottom: 4px;">Jumlah nominal (Rp)</label>
-          <input type="number" value="50000" style="width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--line); font-family: inherit; font-size: 13px;" required />
-        </div>
-        <div>
-          <button type="submit" class="tab-btn active" style="width: 100%; margin: 0; min-height: 39px; font-weight: 500; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 6px;">
-            <i class="fa-solid fa-floppy-disk"></i> Masukkan Data
-          </button>
-        </div>
-      </form>
+    <div class="footer">
+        <p>&copy; 2026 Sistem Administrasi Perikanan - Dashboard KUB Mandiri. Semua data diselaraskan dengan profil penyuluhan KKP.</p>
     </div>
-
-  </div>
-</section>
-<!-- Bagian Kartu Rekapitulasi Kumulatif KUB -->
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 24px;">
-  
-  <!-- Total Dana Terkumpul -->
-  <div class="info-box" style="background: linear-gradient(135deg, #ffffff 0%, #e8f8f5 100%); border-left: 5px solid var(--primary);">
-    <p style="font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px;">Total Iuran Masuk (Kas)</p>
-    <h3 style="font-size: 24px; font-weight: 700; color: var(--primary-dark); margin: 4px 0;">Rp 4.850.000</h3>
-    <span class="badge" style="background: rgba(26,188,156,0.15); color: var(--primary-dark);">
-      <i class="fa-solid fa-arrow-up"></i> 93.2% Target Tercapai
-    </span>
-  </div>
-
-  <!-- Total Sisa Tunggakan -->
-  <div class="info-box" style="background: linear-gradient(135deg, #ffffff 0%, #fef9e7 100%); border-left: 5px solid #f39c12;">
-    <p style="font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px;">Sisa Tunggakan Belum Bayar</p>
-    <h3 style="font-size: 24px; font-weight: 700; color: #d35400; margin: 4px 0;">Rp 350.000</h3>
-    <span class="badge" style="background: #fdebd0; color: #b9770e;">
-      <i class="fa-solid fa-clock"></i> 7 Anggota Belum Lunas
-    </span>
-  </div>
-
-  <!-- Total Partisipasi Anggota -->
-  <div class="info-box" style="background: linear-gradient(135deg, #ffffff 0%, #f4f6f7 100%); border-left: 5px solid var(--sidebar);">
-    <p style="font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px;">Rasio Kepatuhan Anggota</p>
-    <h3 style="font-size: 24px; font-weight: 700; color: var(--sidebar); margin: 4px 0;">82.5%</h3>
-    <span class="badge" style="background: #eaeded; color: var(--sidebar-dark);">
-      <i class="fa-solid fa-users"></i> Dari Total 40 Nelayan
-    </span>
-  </div>
-</div>
-
-<!-- Tabel Breakdown Rincian Kas Per Kelompok -->
-<div class="table-wrap" style="margin-bottom: 24px; border-color: var(--line);">
-  <table style="min-width: 100%;">
-    <thead>
-      <tr style="background: #f2f4f4;">
-        <th>Nama Kelompok Usaha Bersama (KUB)</th>
-        <th style="text-align: right;">Iuran Wajib Masuk</th>
-        <th style="text-align: right;">Iuran Pokok & Sukarela</th>
-        <th style="text-align: right; color: #b9770e;">Tunggakan</th>
-        <th style="text-align: right; font-weight: 700; background: #eaf2f1;">Total Kas Kelompok</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>KUB Sumber Makmur</strong></td>
-        <td style="text-align: right;">Rp 750.000</td>
-        <td style="text-align: right;">Rp 1.200.000</td>
-        <td style="text-align: right; color: #e67e22;">Rp 50.000</td>
-        <td style="text-align: right; font-weight: 600; background: #f4fbf9;">Rp 1.950.000</td>
-      </tr>
-      <tr>
-        <td><strong>KUB Angsa Laut</strong></td>
-        <td style="text-align: right;">Rp 500.000</td>
-        <td style="text-align: right;">Rp 800.000</td>
-        <td style="text-align: right; color: #e67e22;">Rp 100.000</td>
-        <td style="text-align: right; font-weight: 600; background: #f4fbf9;">Rp 1.300.000</td>
-      </tr>
-      <tr>
-        <td><strong>KUB Intimung Taka</strong></td>
-        <td style="text-align: right;">Rp 600.000</td>
-        <td style="text-align: right;">Rp 300.000</td>
-        <td style="text-align: right; color: #e67e22;">Rp 100.000</td>
-        <td style="text-align: right; font-weight: 600; background: #f4fbf9;">Rp 900.000</td>
-      </tr>
-      <tr>
-        <td><strong>KUB Usaha Nelayan</strong></td>
-        <td style="text-align: right;">Rp 450.000</td>
-        <td style="text-align: right;">Rp 250.000</td>
-        <td style="text-align: right; color: #e67e22;">Rp 100.000</td>
-        <td style="text-align: right; font-weight: 600; background: #f4fbf9;">Rp 700.000</td>
-      </tr>
-    </tbody>
-    <tfoot>
-      <tr style="background: #eaf2f1; font-weight: 700; border-top: 2px solid var(--primary);">
-        <td>TOTAL KUMULATIF</td>
-        <td style="text-align: right;">Rp 2.300.000</td>
-        <td style="text-align: right;">Rp 2.550.000</td>
-        <td style="text-align: right; color: #d35400;">Rp 350.000</td>
-        <td style="text-align: right; color: var(--primary-dark); font-size: 15px;">Rp 4.850.000</td>
-      </tr>
-    </tfoot>
-  </table>
-</div>
-
-<h3 style="font-size: 16px; font-weight: 600; margin: 24px 0 12px 0; color: var(--sidebar);">
-  <i class="fa-solid fa-list-check" style="color: var(--primary);"></i> Rincian Pembayaran Per Anggota
-</h3>
-<div class="table-wrap">
-  <table style="min-width: 100%;">
-    <thead>
-      <tr>
-        <th style="width: 50px; text-align: center;">No</th>
-        <th>Nama Anggota</th>
-        <th>Nama KUB</th>
-        <th>Jenis Iuran</th>
-        <th>Periode</th>
-        <th style="text-align: right;">Besaran (Rp)</th>
-        <th style="text-align: center;">Tanggal Bayar</th>
-        <th style="text-align: center;">Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="text-align: center;">1</td>
-        <td><strong>Junaidi</strong></td>
-        <td>KUB Sumber Makmur</td>
-        <td>Iuran Pokok Awal</td>
-        <td>Mei 2026</td>
-        <td style="text-align: right;">Rp 1.200.000</td>
-        <td style="text-align: center;">02 Mei 2026</td>
-        <td style="text-align: center;"><span class="badge" style="background: #e8f8f5; color: #1abc9c; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">Lunas</span></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">2</td>
-        <td><strong>Nanang</strong></td>
-        <td>KUB Sumber Makmur</td>
-        <td>Iuran Wajib Bulanan</td>
-        <td>Mei 2026</td>
-        <td style="text-align: right;">Rp 400.000</td>
-        <td style="text-align: center;">05 Mei 2026</td>
-        <td style="text-align: center;"><span class="badge" style="background: #e8f8f5; color: #1abc9c; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">Lunas</span></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">3</td>
-        <td><strong>Desir</strong></td>
-        <td>KUB Sumber Makmur</td>
-        <td>Iuran Wajib Bulanan</td>
-        <td>Mei 2026</td>
-        <td style="text-align: right;">Rp 350.000</td>
-        <td style="text-align: center;">10 Mei 2026</td>
-        <td style="text-align: center;"><span class="badge" style="background: #e8f8f5; color: #1abc9c; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">Lunas</span></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">4</td>
-        <td><strong>Supyan</strong></td>
-        <td>KUB Sumber Makmur</td>
-        <td>Iuran Wajib Bulanan</td>
-        <td>Mei 2026</td>
-        <td style="text-align: right; color: #d35400;">Rp 50.000</td>
-        <td style="text-align: center; color: var(--muted); font-style: italic;">-</td>
-        <td style="text-align: center;"><span class="badge" style="background: #ffadad; color: #7a0000; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">Tunggakan</span></td>
-      </tr>
-
-      <tr>
-        <td style="text-align: center;">5</td>
-        <td><strong>Muchsin</strong></td>
-        <td>KUB Angsa Laut</td>
-        <td>Iuran Pokok & Sukarela</td>
-        <td>Mei 2026</td>
-        <td style="text-align: right;">Rp 800.000</td>
-        <td style="text-align: center;">04 Mei 2026</td>
-        <td style="text-align: center;"><span class="badge" style="background: #e8f8f5; color: #1abc9c; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">Lunas</span></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">6</td>
-        <td><strong>Abdul Karim</strong></td>
-        <td>KUB Angsa Laut</td>
-        <td>Iuran Wajib Bulanan</td>
-        <td>Mei 2026</td>
-        <td style="text-align: right;">Rp 500.000</td>
-        <td style="text-align: center;">12 Mei 2026</td>
-        <td style="text-align: center;"><span class="badge" style="background: #e8f8f5; color: #1abc9c; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">Lunas</span></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">7</td>
-        <td><strong>Baharuddin</strong></td>
-        <td>KUB Angsa Laut</td>
-        <td>Iuran Wajib Bulanan</td>
-        <td>Mei 2026</td>
-        <td style="text-align: right; color: #d35400;">Rp 100.000</td>
-        <td style="text-align: center; color: var(--muted); font-style: italic;">-</td>
-        <td style="text-align: center;"><span class="badge" style="background: #ffadad; color: #7a0000; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">Tunggakan</span></td>
-      </tr>
-
-      <tr>
-        <td style="text-align: center;">8</td>
-        <td><strong>Adria Saputra</strong></td>
-        <td>KUB Intimung Taka</td>
-        <td>Iuran Wajib Bulanan</td>
-        <td>Mei 2026</td>
-        <td style="text-align: right;">Rp 600.000</td>
-        <td style="text-align: center;">15 Mei 2026</td>
-        <td style="text-align: center;"><span class="badge" style="background: #e8f8f5; color: #1abc9c; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">Lunas</span></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">9</td>
-        <td><strong>Suryono</strong></td>
-        <td>KUB Intimung Taka</td>
-        <td>Iuran Sukarela</td>
-        <td>Mei 2026</td>
-        <td style="text-align: right;">Rp 300.000</td>
-        <td style="text-align: center;">18 Mei 2026</td>
-        <td style="text-align: center;"><span class="badge" style="background: #e8f8f5; color: #1abc9c; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">Lunas</span></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">10</td>
-        <td><strong>Dedi Aris</strong></td>
-        <td>KUB Intimung Taka</td>
-        <td>Iuran Wajib Bulanan</td>
-        <td>Mei 2026</td>
-        <td style="text-align: right; color: #d35400;">Rp 100.000</td>
-        <td style="text-align: center; color: var(--muted); font-style: italic;">-</td>
-        <td style="text-align: center;"><span class="badge" style="background: #ffadad; color: #7a0000; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">Tunggakan</span></td>
-      </tr>
-
-      <tr>
-        <td style="text-align: center;">11</td>
-        <td><strong>Sukardiman</strong></td>
-        <td>KUB Usaha Nelayan</td>
-        <td>Iuran Wajib Bulanan</td>
-        <td>Mei 2026</td>
-        <td style="text-align: right;">Rp 450.000</td>
-        <td style="text-align: center;">20 Mei 2026</td>
-        <td style="text-align: center;"><span class="badge" style="background: #e8f8f5; color: #1abc9c; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">Lunas</span></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">12</td>
-        <td><strong>Zainal Abidin</strong></td>
-        <td>KUB Usaha Nelayan</td>
-        <td>Iuran Pokok awal</td>
-        <td>Mei 2026</td>
-        <td style="text-align: right;">Rp 250.000</td>
-        <td style="text-align: center;">22 Mei 2026</td>
-        <td style="text-align: center;"><span class="badge" style="background: #e8f8f5; color: #1abc9c; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">Lunas</span></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">13</td>
-        <td><strong>M. Tahir</strong></td>
-        <td>KUB Usaha Nelayan</td>
-        <td>Iuran Wajib Bulanan</td>
-        <td>Mei 2026</td>
-        <td style="text-align: right; color: #d35400;">Rp 100.000</td>
-        <td style="text-align: center; color: var(--muted); font-style: italic;">-</td>
-        <td style="text-align: center;"><span class="badge" style="background: #ffadad; color: #7a0000; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">Tunggakan</span></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+</body>
+</html>
