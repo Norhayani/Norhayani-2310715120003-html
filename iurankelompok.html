@@ -176,15 +176,11 @@
         // Catatan: GID "0" biasanya adalah Sheet pertama (Sheet1/Data_Iuran).
         const btnExcel = document.getElementById('btn-excel-download');
         btnExcel.href = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=xlsx&gid=0`;
-
-        // ==============================================================================
-        // 2. LOGIKA NAVIGASI (SIDEBAR)
-        // ==============================================================================
+        2. LOGIKA NAVIGASI (SIDEBAR)
         const navLinks = document.querySelectorAll('.nav-link');
         const headerTitle = document.getElementById('header-title');
         const badgeKub = document.getElementById('badge-kub');
         const inputNamaKub = document.getElementById('nama_kub');
-
         navLinks.forEach(link => {
             link.addEventListener('click', function() {
                 navLinks.forEach(l => l.classList.remove('active'));
@@ -196,49 +192,39 @@
                 inputNamaKub.value = selectedKUB;
             });
         });
-
-        // Set Datetime Local otomatis ke waktu sekarang
+         Set Datetime Local otomatis ke waktu sekarang
         const setWaktuSekarang = () => {
             const now = new Date();
             now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
             document.getElementById('waktu_tanggal').value = now.toISOString().slice(0,16);
         };
         setWaktuSekarang();
-
-        // ==============================================================================
-        // 3. LOGIKA PENGIRIMAN FORMULIR (POST KE APPS SCRIPT)
-        // ==============================================================================
+         3. LOGIKA PENGIRIMAN FORMULIR (POST KE APPS SCRIPT)
         const form = document.getElementById('iuranForm');
         const submitBtn = document.getElementById('submitBtn');
         const statusMsg = document.getElementById('status-msg');
         const feedContainer = document.getElementById('live-feed');
-
-        // Fungsi Format Uang
+         Fungsi Format Uang
         const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(angka);
-
         form.addEventListener('submit', e => {
             e.preventDefault();
             submitBtn.disabled = true;
             submitBtn.innerText = 'Mengirim data...';
-            
             // Simpan data untuk dimunculkan di Live Report setelah berhasil
             const namaPenanda = document.getElementById('nama_pengisi').value;
             const kubPenanda = document.getElementById('nama_kub').value;
             const ketPenanda = document.getElementById('keterangan').value;
             const nominalPenanda = document.getElementById('nominal').value;
-
             const formData = new FormData(form);
             const data = new URLSearchParams();
             for (const pair of formData) { data.append(pair[0], pair[1]); }
-
             fetch(SCRIPT_URL, { method: 'POST', body: data })
             .then(response => response.json())
             .then(result => {
                 if(result.result === "success") {
                     statusMsg.className = 'status-success';
                     statusMsg.innerText = '✅ Data berhasil terkirim ke Google Sheets!';
-                    
-                    // Tambahkan ke Live Report List
+                    Tambahkan ke Live Report List
                     const waktuSekarang = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
                     const li = document.createElement('li');
                     li.className = 'history-item';
@@ -250,8 +236,7 @@
                         <div class="item-amount">+ ${formatRupiah(nominalPenanda)}</div>
                     `;
                     feedContainer.prepend(li);
-                    
-                    // Bersihkan form
+                     Bersihkan form
                     form.reset();
                     setWaktuSekarang();
                     document.getElementById('nama_kub').value = kubPenanda; // Kembalikan value hidden
