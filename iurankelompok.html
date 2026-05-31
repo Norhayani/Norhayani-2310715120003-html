@@ -448,41 +448,95 @@
     </style>
 </head>
 <body>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran Iuran Kelompok</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            color: #1e293b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        .icon-box {
+            width: 64px;
+            height: 64px;
+            background-color: #e0f2fe;
+            color: #0284c7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 20px;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .btn {
+            display: inline-block;
+            width: 100%;
+            background-color: #0284c7;
+            color: white;
+            padding: 14px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(2, 132, 199, 0.2);
+        }
+        .btn:hover {
+            background-color: #0369a1;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(2, 132, 199, 0.3);
+        }
+        .btn:active {
+            transform: translateY(0);
+        }
+        .footer {
+            margin-top: 25px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
 
-    <div class="container">
-        <div class="icon">📊</div>
-        <h1>Sajian Data Tugas Akhir</h1>
-        
-        <p class="description">
-            Halaman ini memuat repositori data penelitian yang digunakan untuk keperluan penyusunan Tugas Akhir. Keseluruhan set data dikelola dan disimpan melalui platform <strong>Google Spreadsheets</strong>. <br><br>
-            Silakan tekan tombol di bawah ini untuk melihat sajian data secara lengkap.
-        </p>
-
-        <!-- Link menuju Google Sheets Anda -->
-        <a href="https://docs.google.com/spreadsheets/d/1RgyVkhFbBeGEL-x9O7iiVdl_yShqwQwRtNa8gM0AOlo/edit?usp=sharing" target="_blank" class="btn-buka">
-            Membuka Google Sheets
-        </a>
-
-        <div class="footer">
-            Sistem Informasi Data • Di-hosting melalui <strong>GitHub Pages</strong>
-        </div>
-    </div>
-    <div class="container">
-        <div class="icon">📈</div>
-        <h1>Dashboard Data Tugas Akhir</h1>
-        
-        <p class="description">
-            Halaman ini memuat visualisasi dan <em>dashboard</em> interaktif dari data penelitian yang digunakan untuk penyusunan Tugas Akhir. Visualisasi ini dibangun menggunakan <strong>Google Data Studio (Looker Studio)</strong>. <br><br>
-            Silakan tekan tombol di bawah ini untuk mengakses laporan visual secara lengkap.
-        </p>
-
-        <a href="https://datastudio.google.com/s/paW5HHnnA2A" target="_blank" class="btn-buka">
-            Membuka Visualisasi Data
-        </a>
-
-        <div class="footer">
-            Sajian Interaktif Tugas Akhir • Di-hosting melalui <strong>GitHub Pages</strong>
-        </div>
+    <div class="card">
+        <div class="icon-box">📋</div>
+        <h1>Iuran Kelompok</h1>
+        <p>Silakan klik tombol di bawah ini untuk menuju ke formulir pembayaran iuran kelompok dan mengisi data setoran Anda.</p>
+        <a href="https://forms.gle/EjVFEPA2kNJryMK48" class="btn" target="_blank">Buka Formulir Iuran</a>
+        <div class="footer">Sistem Informasi Kelompok © 2026</div>
     </div>
 
 </body>
