@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Iuran KUB Nelayan</title>
+    <title>Dashboard Portal Data</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* =========================================
            RESET & BASE
            ========================================= */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background-color: #f0f4f8; color: #1e293b; }
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #1e293b; }
         .app-container { display: flex; min-height: 100vh; }
 
         /* =========================================
@@ -25,802 +25,163 @@
         .nav-menu li { margin-bottom: 5px; }
         .nav-menu a { display: flex; align-items: center; padding: 12px 20px; color: #cbd5e1; text-decoration: none; font-size: 14px; transition: 0.3s; cursor: pointer; border-left: 4px solid transparent; }
         .nav-menu a:hover, .nav-menu a.active { background-color: #1e293b; color: white; border-left-color: #38bdf8; }
+        .nav-menu a span { margin-right: 10px; font-size: 16px; }
 
         /* =========================================
            MAIN CONTENT & HEADER
            ========================================= */
         .main-content { margin-left: 260px; flex: 1; padding: 30px; }
-        .header { background-color: #0284c7; color: white; padding: 20px 25px; border-radius: 8px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        .header h1 { font-size: 20px; font-weight: 600; }
+        .header { background-color: #0284c7; color: white; padding: 20px 25px; border-radius: 12px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .header h1 { font-size: 22px; font-weight: 600; }
+        .header p { font-size: 14px; color: #e0f2fe; margin-top: 5px; }
 
         /* =========================================
-           TOMBOL DOWNLOAD & TOOLTIP (CSS ONLY)
+           GRID LAYOUT & CARDS
            ========================================= */
-        .btn-download {
-            position: relative; 
-            display: inline-flex; align-items: center; gap: 8px;
-            background-color: #10b981; color: white; padding: 10px 18px;
-            text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 600;
-            transition: all 0.3s ease; cursor: pointer; border: none;
+        .grid-container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 25px; 
         }
-        .btn-download:hover { background-color: #059669; }
 
-        .btn-download::after {
-            content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
-            background-color: #1e293b; color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px;
-            white-space: nowrap; opacity: 0; visibility: hidden; transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 10; font-weight: 400;
+        .card {
+            background: white;
+            padding: 35px 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-        .btn-download::before {
-            content: ""; position: absolute; bottom: 80%; left: 50%; transform: translateX(-50%);
-            border-width: 6px; border-style: solid; border-color: #1e293b transparent transparent transparent;
-            opacity: 0; visibility: hidden; transition: all 0.3s ease;
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
-        .btn-download:hover::after { opacity: 1; visibility: visible; bottom: 130%; }
-        .btn-download:hover::before { opacity: 1; visibility: visible; bottom: 105%; }
+
+        .icon-box {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 20px;
+        }
+
+        /* Variasi Warna Icon Box */
+        .icon-form { background-color: #e0f2fe; color: #0284c7; }
+        .icon-sheet { background-color: #d1fae5; color: #10b981; }
+        .icon-looker { background-color: #e0e7ff; color: #4f46e5; }
+        .icon-survey { background-color: #fef08a; color: #ca8a04; }
+
+        .card h2 { font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 12px; }
+        .card p { font-size: 14px; color: #64748b; line-height: 1.6; margin-bottom: 25px; flex-grow: 1; }
 
         /* =========================================
-           GRID LAYOUT (FORM KIRI, LIVE REPORT KANAN)
+           BUTTONS
            ========================================= */
-        .grid-container { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
-
-        /* =========================================
-           FORM SECTION
-           ========================================= */
-        .content-section { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .content-section h2 { font-size: 16px; margin-bottom: 20px; color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .active-kub-badge { background-color: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .btn {
+            display: inline-block;
+            width: 100%;
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
         
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: #475569; }
-        .form-control { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; font-size: 13px; outline: none; transition: 0.2s; }
-        .form-control:focus { border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1); }
-        
-        .btn-submit { background-color: #0284c7; color: white; border: none; padding: 12px 20px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 5px; }
-        .btn-submit:hover { background-color: #0369a1; }
-        .btn-submit:disabled { background-color: #94a3b8; cursor: not-allowed; }
+        .btn-form { background-color: #0284c7; box-shadow: 0 4px 6px rgba(2, 132, 199, 0.2); }
+        .btn-form:hover { background-color: #0369a1; }
 
-        #status-msg { margin-top: 15px; padding: 10px; border-radius: 6px; display: none; font-size: 13px; text-align: center; font-weight: 500; }
-        .status-success { background-color: #d1fae5; color: #065f46; border: 1px solid #34d399; }
-        .status-error { background-color: #fee2e2; color: #991b1b; border: 1px solid #f87171; }
+        .btn-sheet { background-color: #10b981; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2); }
+        .btn-sheet:hover { background-color: #059669; }
+
+        .btn-looker { background-color: #4f46e5; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2); }
+        .btn-looker:hover { background-color: #4338ca; }
+
+        .btn-survey { background-color: #eab308; box-shadow: 0 4px 6px rgba(234, 179, 8, 0.2); }
+        .btn-survey:hover { background-color: #ca8a04; }
 
         /* =========================================
-           LIVE REPORT SECTION
+           RESPONSIVE
            ========================================= */
-        .live-badge { display: flex; align-items: center; gap: 6px; background-color: #fee2e2; color: #dc2626; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
-        .pulse-dot { width: 8px; height: 8px; background-color: #dc2626; border-radius: 50%; animation: pulse 1.5s infinite; }
-        @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(220, 38, 38, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
-        }
-
-        .history-list { list-style: none; overflow: hidden; margin-top: 10px; }
-        .history-item { 
-            padding: 12px; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 10px; 
-            display: flex; justify-content: space-between; align-items: center; background-color: #f8fafc;
-            animation: slideDownFadeIn 0.5s ease forwards;
-        }
-        @keyframes slideDownFadeIn {
-            0% { opacity: 0; transform: translateY(-15px); background-color: #dbeafe; }
-            100% { opacity: 1; transform: translateY(0); background-color: #f8fafc; }
-        }
-        .item-info strong { display: block; font-size: 13px; color: #0f172a; margin-bottom: 2px; }
-        .item-info span { font-size: 11px; color: #64748b; }
-        .item-amount { font-size: 14px; font-weight: 700; color: #10b981; }
-
         @media (max-width: 768px) {
-            .sidebar { display: none; } /* Simplified for snippet */
-            .main-content { margin-left: 0; }
-            .grid-container { grid-template-columns: 1fr; }
+            .sidebar { display: none; } 
+            .main-content { margin-left: 0; padding: 15px; }
+            .header { border-radius: 8px; }
         }
     </style>
 </head>
 <body>
 
     <div class="app-container">
+        <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="brand">
-                <h2>Iuran KUB</h2>
-                <p>Sistem Pencatatan Iuran</p>
+                <h2>Portal Sistem</h2>
+                <p>Navigasi Data & Pelaporan</p>
             </div>
             <ul class="nav-menu">
-                <li><a class="nav-link active" data-kub="KUB Sumber Makmur">🌊 KUB Sumber Makmur</a></li>
-                <li><a class="nav-link" data-kub="KUB Angsa Laut">🚢 KUB Angsa Laut</a></li>
-                <li><a class="nav-link" data-kub="KUB Intimung Taka">⭐ KUB Intimung Taka</a></li>
-                <li><a class="nav-link" data-kub="KUB Usaha Bersama">🤝 KUB Usaha Bersama</a></li>
+                <li><a class="active"><span>🏠</span> Beranda</a></li>
+                <li><a href="#google-form"><span>📋</span> Input Data (Form)</a></li>
+                <li><a href="#spreadsheet"><span>📊</span> Database (Sheet)</a></li>
+                <li><a href="#looker-studio"><span>📈</span> Visualisasi (Looker)</a></li>
+                <li><a href="#kepuasan"><span>⭐</span> Survey Kepuasan</a></li>
             </ul>
         </aside>
 
+        <!-- MAIN CONTENT -->
         <main class="main-content">
             <header class="header">
-                <h1 id="header-title">Dashboard Iuran: KUB Sumber Makmur</h1>
-                <a href="#" id="btn-excel-download" class="btn-download" data-tooltip="Klik untuk mengunduh Laporan Iuran format .xlsx" target="_blank">
-                    📥 Unduh Rekap
-                </a>
+                <div>
+                    <h1>Dashboard Navigasi Terpadu</h1>
+                    <p>Silakan pilih menu di bawah ini untuk mengelola data, melihat laporan, atau mengisi evaluasi.</p>
+                </div>
             </header>
 
             <div class="grid-container">
-                <div class="content-section">
-                    <h2>
-                        ➕ Form Setor Iuran
-                        <span class="active-kub-badge" id="badge-kub">Tujuan: KUB Sumber Makmur</span>
-                    </h2>
-                    
-                    <form id="iuranForm">
-                        <input type="hidden" id="nama_kub" name="nama_kub" value="KUB Sumber Makmur">
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Waktu & Tanggal Pengisian</label>
-                                <input type="datetime-local" id="waktu_tanggal" name="waktu_tanggal" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Nama Penyetor / Pengisi</label>
-                                <input type="text" id="nama_pengisi" name="nama_pengisi" class="form-control" placeholder="Contoh: Budi Santoso" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Nominal Iuran (Rp)</label>
-                            <input type="number" id="nominal" name="nominal" class="form-control" placeholder="Contoh: 50000" min="1000" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Keterangan</label>
-                            <input type="text" id="keterangan" name="keterangan" class="form-control" placeholder="Contoh: Iuran wajib bulan Mei" required>
-                        </div>
-
-                        <button type="submit" id="submitBtn" class="btn-submit">Kirim Data Iuran ke Spreadsheet</button>
-                        <div id="status-msg"></div>
-                    </form>
+                
+                <!-- CARD 1: GOOGLE FORM -->
+                <div class="card" id="google-form">
+                    <div class="icon-box icon-form">📋</div>
+                    <h2>Input Form (G-Form)</h2>
+                    <p>Buka formulir untuk melakukan pengisian data baru, setoran, atau input operasional lainnya.</p>
+                    <a href="https://forms.google.com/YOUR_FORM_LINK" target="_blank" class="btn btn-form">Buka Formulir</a>
                 </div>
 
-                <div class="content-section">
-                    <h2>
-                        Riwayat Setoran
-                        <div class="live-badge">
-                            <div class="pulse-dot"></div>
-                            LIVE
-                        </div>
-                    </h2>
-                    <ul class="history-list" id="live-feed">
-                        <li class="history-item">
-                            <div class="item-info">
-                                <strong>Menunggu setoran...</strong>
-                                <span>Sistem siap menerima data.</span>
-                            </div>
-                        </li>
-                    </ul>
+                <!-- CARD 2: SPREADSHEET -->
+                <div class="card" id="spreadsheet">
+                    <div class="icon-box icon-sheet">📊</div>
+                    <h2>Data Spreadsheet</h2>
+                    <p>Akses database mentah di Google Sheets untuk melihat rekapitulasi data yang telah masuk.</p>
+                    <a href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID" target="_blank" class="btn btn-sheet">Lihat Database</a>
                 </div>
+
+                <!-- CARD 3: LOOKER STUDIO -->
+                <div class="card" id="looker-studio">
+                    <div class="icon-box icon-looker">📈</div>
+                    <h2>Looker Studio</h2>
+                    <p>Lihat visualisasi data, grafik analitik interaktif, dan sajian dashboard pelaporan secara real-time.</p>
+                    <a href="https://lookerstudio.google.com/YOUR_DASHBOARD_LINK" target="_blank" class="btn btn-looker">Buka Dashboard</a>
+                </div>
+
+                <!-- CARD 4: TINGKAT KEPUASAN -->
+                <div class="card" id="kepuasan">
+                    <div class="icon-box icon-survey">⭐</div>
+                    <h2>Tingkat Kepuasan</h2>
+                    <p>Isi kuesioner tingkat kepuasan untuk membantu kami mengevaluasi dan meningkatkan sistem.</p>
+                    <a href="https://forms.google.com/YOUR_SURVEY_LINK" target="_blank" class="btn btn-survey">Isi Survey</a>
+                </div>
+
             </div>
         </main>
-    </div>
-
-    <script>
-        // ==============================================================================
-        // 1. LINK GOOGLE APPS SCRIPT & SPREADSHEET (DARI USER)
-        // ==============================================================================
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxiMIkT3ceXB4le1KNLJ2byxml17x4ecuHNdK3M28gG21HMU3TGYAPK_uX1egGEQqfOzw/exec'; 
-        const SHEET_ID = '1RgyVkhFbBeGEL-x9O7iiVdl_yShqwQwRtNa8gM0AOlo';
-
-        // Set Link Unduh Otomatis ke Spreadsheet Tersebut
-        // Catatan: GID "0" biasanya adalah Sheet pertama (Sheet1/Data_Iuran).
-        const btnExcel = document.getElementById('btn-excel-download');
-        btnExcel.href = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=xlsx&gid=0`;
-
-        // ==============================================================================
-        // 2. LOGIKA NAVIGASI (SIDEBAR)
-        // ==============================================================================
-        const navLinks = document.querySelectorAll('.nav-link');
-        const headerTitle = document.getElementById('header-title');
-        const badgeKub = document.getElementById('badge-kub');
-        const inputNamaKub = document.getElementById('nama_kub');
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                navLinks.forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-                
-                const selectedKUB = this.getAttribute('data-kub');
-                headerTitle.innerText = "Dashboard Iuran: " + selectedKUB;
-                badgeKub.innerText = "Tujuan: " + selectedKUB;
-                inputNamaKub.value = selectedKUB;
-            });
-        });
-
-        // Set Datetime Local otomatis ke waktu sekarang
-        const setWaktuSekarang = () => {
-            const now = new Date();
-            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-            document.getElementById('waktu_tanggal').value = now.toISOString().slice(0,16);
-        };
-        setWaktuSekarang();
-
-        // ==============================================================================
-        // 3. LOGIKA PENGIRIMAN FORMULIR (POST KE APPS SCRIPT)
-        // ==============================================================================
-        const form = document.getElementById('iuranForm');
-        const submitBtn = document.getElementById('submitBtn');
-        const statusMsg = document.getElementById('status-msg');
-        const feedContainer = document.getElementById('live-feed');
-
-        // Fungsi Format Uang
-        const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(angka);
-
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Mengirim data...';
-            
-            // Simpan data untuk dimunculkan di Live Report setelah berhasil
-            const namaPenanda = document.getElementById('nama_pengisi').value;
-            const kubPenanda = document.getElementById('nama_kub').value;
-            const ketPenanda = document.getElementById('keterangan').value;
-            const nominalPenanda = document.getElementById('nominal').value;
-
-            const formData = new FormData(form);
-            const data = new URLSearchParams();
-            for (const pair of formData) { data.append(pair[0], pair[1]); }
-
-            fetch(SCRIPT_URL, { method: 'POST', body: data })
-            .then(response => response.json())
-            .then(result => {
-                if(result.result === "success") {
-                    statusMsg.className = 'status-success';
-                    statusMsg.innerText = '✅ Data berhasil terkirim ke Google Sheets!';
-                    
-                    // Tambahkan ke Live Report List
-                    const waktuSekarang = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-                    const li = document.createElement('li');
-                    li.className = 'history-item';
-                    li.innerHTML = `
-                        <div class="item-info">
-                            <strong>${namaPenanda} - ${kubPenanda}</strong>
-                            <span>${ketPenanda} • Baru saja (${waktuSekarang})</span>
-                        </div>
-                        <div class="item-amount">+ ${formatRupiah(nominalPenanda)}</div>
-                    `;
-                    feedContainer.prepend(li);
-                    
-                    // Bersihkan form
-                    form.reset();
-                    setWaktuSekarang();
-                    document.getElementById('nama_kub').value = kubPenanda; // Kembalikan value hidden
-                } else { throw new Error("Gagal"); }
-            })
-            .catch(error => {
-                statusMsg.className = 'status-error';
-                statusMsg.innerText = '❌ Terjadi kesalahan koneksi ke Spreadsheet.';
-            })
-            .finally(() => {
-                statusMsg.style.display = 'block';
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'Kirim Data Iuran ke Spreadsheet';
-                setTimeout(() => { statusMsg.style.display = 'none'; }, 5000);
-            });
-        });
-    </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sajian Data Tugas Akhir</title>
-    <!-- Menggunakan Font Google Inter agar terlihat profesional -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* Pengaturan Dasar */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-            color: #0f172a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        /* Desain Kotak Konten (Card) */
-        .container {
-            background-color: #ffffff;
-            max-width: 550px;
-            width: 100%;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            text-align: center;
-        }
-
-        .icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-
-        h1 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: #1e293b;
-        }
-
-        p.description {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #64748b;
-            margin-bottom: 30px;
-        }
-
-        /* Desain Tombol */
-        .btn-buka {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background-color: #0284c7;
-            color: white;
-            padding: 14px 28px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(2, 132, 199, 0.25);
-        }
-
-        .btn-buka:hover {
-            background-color: #0369a1;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(2, 132, 199, 0.35);
-        }
-
-        /* Teks Footer */
-        .footer {
-            margin-top: 30px;
-            font-size: 13px;
-            color: #94a3b8;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 15px;
-        }
-
-        .footer a {
-            color: #0284c7;
-            text-decoration: none;
-        }
-        
-        .footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pembayaran Iuran Kelompok</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8;
-            color: #1e293b;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .card {
-            background: white;
-            padding: 40px 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-            max-width: 450px;
-            width: 100%;
-            text-align: center;
-            border: 1px solid #e2e8f0;
-        }
-        .icon-box {
-            width: 64px;
-            height: 64px;
-            background-color: #e0f2fe;
-            color: #0284c7;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            margin: 0 auto 20px;
-        }
-        h1 {
-            font-size: 24px;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 10px;
-        }
-        p {
-            font-size: 14px;
-            color: #64748b;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-        .btn {
-            display: inline-block;
-            width: 100%;
-            background-color: #0284c7;
-            color: white;
-            padding: 14px 24px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 6px -1px rgba(2, 132, 199, 0.2);
-        }
-        .btn:hover {
-            background-color: #0369a1;
-            transform: translateY(-1px);
-            box-shadow: 0 10px 15px -3px rgba(2, 132, 199, 0.3);
-        }
-        .btn:active {
-            transform: translateY(0);
-        }
-        .footer {
-            margin-top: 25px;
-            font-size: 12px;
-            color: #94a3b8;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="card">
-        <div class="icon-box">📋</div>
-        <h1>Iuran Kelompok</h1>
-        <p>Silakan klik tombol di bawah ini untuk menuju ke formulir pembayaran iuran kelompok dan mengisi data setoran Anda.</p>
-        <a href="https://forms.gle/EjVFEPA2kNJryMK48" class="btn" target="_blank">Buka Formulir Iuran</a>
-        <div class="footer">Sistem Informasi Kelompok © 2026</div>
-    </div>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Spreadsheet Kelompok</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8;
-            color: #1e293b;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .card {
-            background: white;
-            padding: 40px 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-            max-width: 450px;
-            width: 100%;
-            text-align: center;
-            border: 1px solid #e2e8f0;
-        }
-        .icon-box {
-            width: 64px;
-            height: 64px;
-            background-color: #d1fae5;
-            color: #10b981;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            margin: 0 auto 20px;
-        }
-        h1 {
-            font-size: 22px;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 10px;
-        }
-        p {
-            font-size: 14px;
-            color: #64748b;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-        .btn {
-            display: inline-block;
-            width: 100%;
-            background-color: #10b981;
-            color: white;
-            padding: 14px 24px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
-        }
-        .btn:hover {
-            background-color: #059669;
-            transform: translateY(-1px);
-            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
-        }
-        .btn:active {
-            transform: translateY(0);
-        }
-        .footer {
-            margin-top: 25px;
-            font-size: 12px;
-            color: #94a3b8;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="card">
-        <div class="icon-box">📊</div>
-        <h1>Data Spreadsheet</h1>
-        <p>Silakan klik tombol di bawah ini untuk membuka dan melihat rekapitulasi data iuran kelompok yang tersimpan di Google Sheets.</p>
-        <a href="https://docs.google.com/spreadsheets/d/1EwTXr-gqCMKXmTB32iV4Xy2UnqfSEaYyjZRfq65bTWg/edit?usp=sharing" class="btn" target="_blank">Buka Google Spreadsheet</a>
-        <div class="footer">Sistem Informasi Kelompok © 2026</div>
-    </div>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sajian Data Tugas Akhir</title>
-    <!-- Menggunakan Font Google Inter agar terlihat profesional -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* Pengaturan Dasar */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-            color: #0f172a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        /* Desain Kotak Konten (Card) */
-        .container {
-            background-color: #ffffff;
-            max-width: 550px;
-            width: 100%;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            text-align: center;
-        }
-
-        .icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-
-        h1 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: #1e293b;
-        }
-
-        p.description {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #64748b;
-            margin-bottom: 30px;
-        }
-
-        /* Desain Tombol */
-        .btn-buka {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background-color: #0284c7;
-            color: white;
-            padding: 14px 28px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(2, 132, 199, 0.25);
-        }
-
-        .btn-buka:hover {
-            background-color: #0369a1;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(2, 132, 199, 0.35);
-        }
-
-        /* Teks Footer */
-        .footer {
-            margin-top: 30px;
-            font-size: 13px;
-            color: #94a3b8;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 15px;
-        }
-
-        .footer a {
-            color: #0284c7;
-            text-decoration: none;
-        }
-        
-        .footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <div class="icon">📊</div>
-        <h1>Sajian Data Tugas Akhir</h1>
-        
-        <p class="description">
-            Halaman ini memuat repositori data penelitian yang digunakan untuk keperluan penyusunan Tugas Akhir. Keseluruhan set data dikelola dan disimpan melalui platform <strong>Google Spreadsheets</strong>. <br><br>
-            Silakan tekan tombol di bawah ini untuk melihat sajian data secara lengkap.
-        </p>
-
-        <!-- Link menuju Google Sheets Anda -->
-        <a href="https://docs.google.com/spreadsheets/d/1RgyVkhFbBeGEL-x9O7iiVdl_yShqwQwRtNa8gM0AOlo/edit?usp=sharing" target="_blank" class="btn-buka">
-            Membuka Google Sheets
-        </a>
-
-        <div class="footer">
-            Sistem Informasi Data • Di-hosting melalui <strong>GitHub Pages</strong>
-        </div>
-    </div>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sajian Data Tugas Akhir - Dashboard Interaktif</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* =========================================
-           RESET & BASE
-           ========================================= */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f1f5f9;
-            color: #0f172a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        /* =========================================
-           CARD CONTAINER
-           ========================================= */
-        .container {
-            background-color: #ffffff;
-            max-width: 550px;
-            width: 100%;
-            padding: 45px 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-            text-align: center;
-            border: 1px solid #e2e8f0;
-        }
-
-        .icon {
-            font-size: 54px;
-            margin-bottom: 15px;
-            line-height: 1;
-        }
-
-        h1 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: #1e293b;
-        }
-
-        p.description {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #475569;
-            margin-bottom: 35px;
-        }
-
-        /* =========================================
-           TOMBOL UTAMA
-           ========================================= */
-        .btn-buka {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background-color: #4f46e5; /* Warna ungu kebiruan khas dashboard modern */
-            color: white;
-            padding: 14px 32px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
-        }
-
-        .btn-buka:hover {
-            background-color: #4338ca;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(79, 70, 229, 0.35);
-        }
-
-        /* =========================================
-           FOOTER TEKS
-           ========================================= */
-        .footer {
-            margin-top: 35px;
-            font-size: 13px;
-            color: #94a3b8;
-            border-top: 1px solid #f1f5f9;
-            padding-top: 20px;
-        }
-
-        .footer strong {
-            color: #64748b;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <div class="icon">📈</div>
-        <h1>Dashboard Data Tugas Akhir</h1>
-        
-        <p class="description">
-            Halaman ini memuat visualisasi dan <em>dashboard</em> interaktif dari data penelitian yang digunakan untuk penyusunan Tugas Akhir. Visualisasi ini dibangun menggunakan <strong>Google Data Studio (Looker Studio)</strong>. <br><br>
-            Silakan tekan tombol di bawah ini untuk mengakses laporan visual secara lengkap.
-        </p>
-
-        <a href="https://datastudio.google.com/s/paW5HHnnA2A" target="_blank" class="btn-buka">
-            Membuka Visualisasi Data
-        </a>
-
-        <div class="footer">
-            Sajian Interaktif Tugas Akhir • Di-hosting melalui <strong>GitHub Pages</strong>
-        </div>
     </div>
 
 </body>
