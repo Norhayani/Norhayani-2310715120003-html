@@ -60,12 +60,12 @@
         .btn-download:hover::before { opacity: 1; visibility: visible; bottom: 105%; }
 
         /* =========================================
-           GRID LAYOUT
+           GRID LAYOUT (FORM KIRI, LIVE REPORT KANAN)
            ========================================= */
-        .grid-container { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; margin-bottom: 25px; }
+        .grid-container { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
 
         /* =========================================
-           CONTENT SECTION
+           FORM SECTION
            ========================================= */
         .content-section { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         .content-section h2 { font-size: 16px; margin-bottom: 20px; color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
@@ -81,9 +81,9 @@
         .btn-submit:hover { background-color: #0369a1; }
         .btn-submit:disabled { background-color: #94a3b8; cursor: not-allowed; }
 
-        #status-msg, .status-box { margin-top: 15px; padding: 10px; border-radius: 6px; display: none; font-size: 13px; text-align: center; font-weight: 500; }
-        .status-success { background-color: #d1fae5; color: #065f46; border: 1px solid #34d399; display: block !important; }
-        .status-error { background-color: #fee2e2; color: #991b1b; border: 1px solid #f87171; display: block !important; }
+        #status-msg { margin-top: 15px; padding: 10px; border-radius: 6px; display: none; font-size: 13px; text-align: center; font-weight: 500; }
+        .status-success { background-color: #d1fae5; color: #065f46; border: 1px solid #34d399; }
+        .status-error { background-color: #fee2e2; color: #991b1b; border: 1px solid #f87171; }
 
         /* =========================================
            LIVE REPORT SECTION
@@ -110,26 +110,10 @@
         .item-info span { font-size: 11px; color: #64748b; }
         .item-amount { font-size: 14px; font-weight: 700; color: #10b981; }
 
-        /* =========================================
-           LOOKER STUDIO & SATISFACTION FORM STYLE
-           ========================================= */
-        .iframe-container { position: relative; width: 100%; height: 400px; background-color: #f8fafc; border-radius: 6px; border: 1px dashed #cbd5e1; overflow: hidden; }
-        .iframe-container iframe { width: 100%; height: 100%; border: 0; }
-        
-        .rating-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
-        .rating-box { border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; text-align: center; cursor: pointer; transition: 0.2s; background: #f8fafc; }
-        .rating-box:hover { border-color: #0284c7; background-color: #f0f9ff; }
-        .rating-box input { display: none; }
-        .rating-box span { display: block; font-size: 20px; margin-bottom: 4px; }
-        .rating-box p { font-size: 11px; font-weight: 600; color: #64748b; }
-        .rating-box input:checked + div { background-color: #e0f2fe; border-radius: 6px; margin: -10px; padding: 10px; border: 2px solid #0284c7; }
-        .rating-box input:checked + div p { color: #0369a1; }
-
         @media (max-width: 768px) {
-            .sidebar { display: none; }
+            .sidebar { display: none; } /* Simplified for snippet */
             .main-content { margin-left: 0; }
             .grid-container { grid-template-columns: 1fr; }
-            .rating-options { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -211,6 +195,9 @@
                     </ul>
                 </div>
             </div>
+        </main>
+    </div>
+
     <script>
         // ==============================================================================
         // 1. LINK GOOGLE APPS SCRIPT & SPREADSHEET (DARI USER)
@@ -219,6 +206,7 @@
         const SHEET_ID = '1RgyVkhFbBeGEL-x9O7iiVdl_yShqwQwRtNa8gM0AOlo';
 
         // Set Link Unduh Otomatis ke Spreadsheet Tersebut
+        // Catatan: GID "0" biasanya adalah Sheet pertama (Sheet1/Data_Iuran).
         const btnExcel = document.getElementById('btn-excel-download');
         btnExcel.href = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=xlsx&gid=0`;
 
@@ -251,13 +239,14 @@
         setWaktuSekarang();
 
         // ==============================================================================
-        // 3. LOGIKA PENGIRIMAN FORMULIR IURAN
+        // 3. LOGIKA PENGIRIMAN FORMULIR (POST KE APPS SCRIPT)
         // ==============================================================================
         const form = document.getElementById('iuranForm');
         const submitBtn = document.getElementById('submitBtn');
         const statusMsg = document.getElementById('status-msg');
         const feedContainer = document.getElementById('live-feed');
 
+        // Fungsi Format Uang
         const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(angka);
 
         form.addEventListener('submit', e => {
@@ -265,6 +254,7 @@
             submitBtn.disabled = true;
             submitBtn.innerText = 'Mengirim data...';
             
+            // Simpan data untuk dimunculkan di Live Report setelah berhasil
             const namaPenanda = document.getElementById('nama_pengisi').value;
             const kubPenanda = document.getElementById('nama_kub').value;
             const ketPenanda = document.getElementById('keterangan').value;
@@ -281,6 +271,7 @@
                     statusMsg.className = 'status-success';
                     statusMsg.innerText = '✅ Data berhasil terkirim ke Google Sheets!';
                     
+                    // Tambahkan ke Live Report List
                     const waktuSekarang = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
                     const li = document.createElement('li');
                     li.className = 'history-item';
@@ -291,15 +282,12 @@
                         </div>
                         <div class="item-amount">+ ${formatRupiah(nominalPenanda)}</div>
                     `;
-                    
-                    if(feedContainer.querySelector('strong').innerText === "Menunggu setoran...") {
-                        feedContainer.innerHTML = '';
-                    }
                     feedContainer.prepend(li);
                     
+                    // Bersihkan form
                     form.reset();
                     setWaktuSekarang();
-                    document.getElementById('nama_kub').value = kubPenanda;
+                    document.getElementById('nama_kub').value = kubPenanda; // Kembalikan value hidden
                 } else { throw new Error("Gagal"); }
             })
             .catch(error => {
@@ -312,33 +300,6 @@
                 submitBtn.innerText = 'Kirim Data Iuran ke Spreadsheet';
                 setTimeout(() => { statusMsg.style.display = 'none'; }, 5000);
             });
-        });
-
-        // ==============================================================================
-        // 4. LOGIKA PENGIRIMAN FORM TINGKAT KEPUASAN (FEEDBACK)
-        // ==============================================================================
-        const feedbackForm = document.getElementById('feedbackForm');
-        const submitFeedbackBtn = document.getElementById('submitFeedbackBtn');
-        const statusMsgFeedback = document.getElementById('status-msg-feedback');
-
-        feedbackForm.addEventListener('submit', e => {
-            e.preventDefault();
-            submitFeedbackBtn.disabled = true;
-            submitFeedbackBtn.innerText = 'Mengirim penilaian...';
-
-            // Catatan: Jika ingin menyambungkan data kepuasan ini ke tabel sheet lain,
-            // Anda bisa menggunakan fetch API baru atau Google Form API terpisah di sini.
-            // Untuk saat ini di-set simulasi berhasil lokal.
-            setTimeout(() => {
-                statusMsgFeedback.className = 'status-box status-success';
-                statusMsgFeedback.innerText = '⭐ Terima kasih! Penilaian Anda membantu perkembangan kelompok.';
-                statusMsgFeedback.style.display = 'block';
-                
-                feedbackForm.reset();
-                submitFeedbackBtn.disabled = false;
-                submitFeedbackBtn.innerText = 'Kirim Penilaian Anggota';
-                setTimeout(() => { statusMsgFeedback.style.display = 'none'; }, 5000);
-            }, 1000);
         });
     </script>
 </body>
