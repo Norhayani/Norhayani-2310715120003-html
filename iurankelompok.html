@@ -19,17 +19,32 @@
         .brand { padding: 25px 20px; background-color: #020617; text-align: center; border-bottom: 1px solid #1e293b; }
         .brand h2 { font-size: 18px; color: #38bdf8; }
         .brand p { font-size: 12px; color: #94a3b8; margin-top: 5px; }
-
+        
         .nav-menu { list-style: none; padding: 20px 0; flex: 1; }
         .nav-menu li { margin-bottom: 5px; }
         .nav-menu a { display: flex; align-items: center; padding: 12px 20px; color: #cbd5e1; text-decoration: none; font-size: 14px; transition: 0.3s; cursor: pointer; border-left: 4px solid transparent; }
         .nav-menu a:hover, .nav-menu a.active { background-color: #1e293b; color: white; border-left-color: #38bdf8; }
+        
+        /* Style Tambahan khusus Tombol Beranda di Sidebar */
+        .nav-menu a.btn-nav-home { background-color: #0284c7; color: white; font-weight: 600; margin-bottom: 15px; border-left-color: #38bdf8; }
+        .nav-menu a.btn-nav-home:hover { background-color: #0369a1; }
+
         /* =========================================
            MAIN CONTENT & HEADER
            ========================================= */
         .main-content { margin-left: 260px; flex: 1; padding: 30px; }
         .header { background-color: #0284c7; color: white; padding: 20px 25px; border-radius: 8px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
         .header h1 { font-size: 20px; font-weight: 600; }
+        .header-actions { display: flex; gap: 10px; align-items: center; }
+
+        /* Style Tambahan Tombol Beranda di Header */
+        .btn-header-home {
+            display: inline-flex; align-items: center; gap: 6px;
+            background-color: rgba(255, 255, 255, 0.15); color: white; padding: 10px 18px;
+            text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 600;
+            transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        .btn-header-home:hover { background-color: rgba(255, 255, 255, 0.3); }
 
         /* =========================================
            TOMBOL DOWNLOAD & TOOLTIP (CSS ONLY)
@@ -109,8 +124,10 @@
         .item-amount { font-size: 14px; font-weight: 700; color: #10b981; }
 
         @media (max-width: 768px) {
-            .sidebar { display: none; } /* Simplified for snippet */
+            .sidebar { display: none; } 
             .main-content { margin-left: 0; }
+            .header { flex-direction: column; gap: 15px; align-items: flex-start; }
+            .header-actions { width: 100%; justify-content: space-between; }
             .grid-container { grid-template-columns: 1fr; }
         }
     </style>
@@ -124,6 +141,8 @@
                 <p>Sistem Pencatatan Iuran</p>
             </div>
             <ul class="nav-menu">
+                <li><a href="index.html" class="btn-nav-home">🏠 Kembali ke Beranda</a></li>
+                
                 <li><a class="nav-link active" data-kub="KUB Sumber Makmur">🌊 KUB Sumber Makmur</a></li>
                 <li><a class="nav-link" data-kub="KUB Angsa Laut">🚢 KUB Angsa Laut</a></li>
                 <li><a class="nav-link" data-kub="KUB Intimung Taka">⭐ KUB Intimung Taka</a></li>
@@ -134,9 +153,12 @@
         <main class="main-content">
             <header class="header">
                 <h1 id="header-title">Dashboard Iuran: KUB Sumber Makmur</h1>
-                <a href="#" id="btn-excel-download" class="btn-download" data-tooltip="Klik untuk mengunduh Laporan Iuran format .xlsx" target="_blank">
-                    📥 Unduh Rekap
-                </a>
+                <div class="header-actions">
+                    <a href="index.html" class="btn-header-home">🏠 Beranda</a>
+                    <a href="#" id="btn-excel-download" class="btn-download" data-tooltip="Klik untuk mengunduh Laporan Iuran format .xlsx" target="_blank">
+                        📥 Unduh Rekap
+                    </a>
+                </div>
             </header>
 
             <div class="grid-container">
@@ -171,7 +193,7 @@
                         </div>
 
                         <button type="submit" id="submitBtn" class="btn-submit">Kirim Data Iuran ke Spreadsheet</button>
-                        <div id="status-msg">https://docs.google.com/spreadsheets/d/1RgyVkhFbBeGEL-x9O7iiVdl_yShqwQwRtNa8gM0AOlo/edit?usp=sharing</div>
+                        <div id="status-msg"></div>
                     </form>
                 </div>
 
@@ -197,21 +219,12 @@
     </div>
 
     <script>
-        // ==============================================================================
-        // 1. LINK GOOGLE APPS SCRIPT & SPREADSHEET (DARI USER)
-        // ==============================================================================
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxiMIkT3ceXB4le1KNLJ2byxml17x4ecuHNdK3M28gG21HMU3TGYAPK_uX1egGEQqfOzw/exec'; 
+       const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw9JZc3AYFCCAIZ37GJUeK_N1nnWa-155W5dLdmCacfM6o6j-wIjEWA-YNQ7bBRyBOrPQ/exec'; 
         const SHEET_ID = '1RgyVkhFbBeGEL-x9O7iiVdl_yShqwQwRtNa8gM0AOlo';
-
-        // Set Link Unduh Otomatis ke Spreadsheet Tersebut
-        // Catatan: GID "0" biasanya adalah Sheet pertama (Sheet1/Data_Iuran).
         const btnExcel = document.getElementById('btn-excel-download');
         btnExcel.href = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=xlsx&gid=0`;
 
-        // ==============================================================================
-        // 2. LOGIKA NAVIGASI (SIDEBAR)
-        // ==============================================================================
-        const navLinks = document.querySelectorAll('.nav-link');
+        const navLinks = document.querySelectorAll('.nav-link:not(.btn-nav-home)');
         const headerTitle = document.getElementById('header-title');
         const badgeKub = document.getElementById('badge-kub');
         const inputNamaKub = document.getElementById('nama_kub');
@@ -228,7 +241,6 @@
             });
         });
 
-        // Set Datetime Local otomatis ke waktu sekarang
         const setWaktuSekarang = () => {
             const now = new Date();
             now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
@@ -236,15 +248,11 @@
         };
         setWaktuSekarang();
 
-        // ==============================================================================
-        // 3. LOGIKA PENGIRIMAN FORMULIR (POST KE APPS SCRIPT)
-        // ==============================================================================
         const form = document.getElementById('iuranForm');
         const submitBtn = document.getElementById('submitBtn');
         const statusMsg = document.getElementById('status-msg');
         const feedContainer = document.getElementById('live-feed');
 
-        // Fungsi Format Uang
         const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(angka);
 
         form.addEventListener('submit', e => {
@@ -252,7 +260,6 @@
             submitBtn.disabled = true;
             submitBtn.innerText = 'Mengirim data...';
             
-            // Simpan data untuk dimunculkan di Live Report setelah berhasil
             const namaPenanda = document.getElementById('nama_pengisi').value;
             const kubPenanda = document.getElementById('nama_kub').value;
             const ketPenanda = document.getElementById('keterangan').value;
@@ -269,7 +276,6 @@
                     statusMsg.className = 'status-success';
                     statusMsg.innerText = '✅ Data berhasil terkirim ke Google Sheets!';
                     
-                    // Tambahkan ke Live Report List
                     const waktuSekarang = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
                     const li = document.createElement('li');
                     li.className = 'history-item';
@@ -282,10 +288,9 @@
                     `;
                     feedContainer.prepend(li);
                     
-                    // Bersihkan form
                     form.reset();
                     setWaktuSekarang();
-                    document.getElementById('nama_kub').value = kubPenanda; // Kembalikan value hidden
+                    document.getElementById('nama_kub').value = kubPenanda; 
                 } else { throw new Error("Gagal"); }
             })
             .catch(error => {
