@@ -3,241 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sajian Data GitHub</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #f9f9f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            text-align: center;
-            width: 100%;
-            max-width: 650px;
-        }
-
-        h2 { color: #333; margin-top: 0; }
-        p { color: #666; margin-bottom: 25px; }
-
-        .btn-tampilkan {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn-tampilkan:hover {
-            background-color: #0056b3;
-            transform: translateY(-2px);
-        }
-
-        #data-container {
-            margin-top: 20px;
-            display: none; /* Tersembunyi di awal */
-            width: 100%;
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* Responsivitas Iframe */
-        .iframe-wrapper {
-            position: relative;
-            width: 100%;
-            padding-bottom: 75%; /* Menjaga aspek rasio 600:450 */
-            height: 0;
-        }
-
-        .iframe-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-    </style>
-</head>
-<body>
-    <div class="card">
-           <h2>Visualisasi Data</h2>
-        <p>Klik tombol di bawah untuk memuat dashboard interaktif.</p>
-        
-        <button class="btn-tampilkan" onclick="showData()">Tampilkan Sajian Data</button>
-
-        <div id="data-container">
-            <div class="iframe-wrapper">
-                <!-- Iframe Pesanan Anda -->
-                <iframe 
-                    width="600" 
-                    height="450" 
-                    src="https://datastudio.google.com/embed/reporting/8bda613c-edf9-4f2a-ab60-513dcb0a03dd/page/page_12345" 
-                    frameborder="0" 
-                    style="border:0" 
-                    allowfullscreen 
-                    sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
-                </iframe>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function showData() {
-            var container = document.getElementById("data-container");
-            var button = document.querySelector(".btn-tampilkan");
-            
-            // Menampilkan kontainer iframe
-            container.style.display = "block";
-            // Menyembunyikan tombol setelah diklik (opsional)
-            button.style.display = "none";
-        }
-    </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Data Terpadu</title>
+    <title>Sajian Data Portal</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 20px;
+            background-color: #f4f7f9;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .container {
-            width: 100%;
-            max-width: 1000px;
-            text-align: center;
-        }
-        h1 { color: #1a73e8; margin-bottom: 30px; }
-        .menu-buttons {
-            margin-bottom: 30px;
-            display: flex;
-            gap: 15px;
             justify-content: center;
-            flex-wrap: wrap;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-        .btn {
-            background-color: #ffffff;
-            color: #1a73e8;
-            border: 2px solid #1a73e8;
+        .card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 8px;
+        }
+        p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        .btn-trigger {
+            background-color: #4f46e5;
+            color: white;
+            border: none;
             padding: 12px 24px;
             font-size: 16px;
             font-weight: 600;
-            border-radius: 30px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .btn:hover {
-            background-color: #1a73e8;
-            color: white;
-        }
-        .btn.active {
-            background-color: #1a73e8;
-            color: white;
-        }
-        .data-section {
-            display: none; /* Sembunyi secara default */
-            background: white;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: background 0.3s ease;
             width: 100%;
-            animation: fadeIn 0.5s ease;
         }
+        .btn-trigger:hover {
+            background-color: #4338ca;
+        }
+        .link-container {
+            margin-top: 20px;
+            display: none; /* Tersembunyi di awal */
+            flex-direction: column;
+            gap: 12px;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        .data-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        .data-link:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+        .looker {
+            background-color: #4285F4; /* Warna khas Google/Looker */
+        }
+        .spreadsheet {
+            background-color: #0F9D58; /* Warna khas Google Sheets */
+        }
+        /* Efek animasi muncul */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* Pembungkus Iframe Responsif */
-        .responsive-iframe {
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            padding-top: 75%; /* Rasio 4:3 */
-        }
-        .responsive-iframe iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        .footer { margin-top: 40px; color: #888; font-size: 0.9em; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Dashboard Penyajian Data</h1>
-        <div class="menu-buttons">
-            <button class="btn" onclick="showSection('looker')">Visualisasi Looker Studio</button>
-            <button class="btn" onclick="showSection('sheets')">Data Google Sheets</button>
-        </div>
-        <!-- Bagian Looker Studio -->
-        <div id="looker" class="data-section">
-            <h3>Laporan Looker Studio</h3>
-            <div class="responsive-iframe">
-                <iframe 
-                    src="https://datastudio.google.com/embed/reporting/8bda613c-edf9-4f2a-ab60-513dcb0a03dd/page/page_12345" 
-                    allowfullscreen 
-                    sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
-                </iframe>
-            </div>
-        </div>
-        <!-- Bagian Google Sheets -->
-        <div id="sheets" class="data-section">
-            <h3>Tabel Data Google Sheets</h3>
-            <div class="responsive-iframe">
-                <iframe 
-                    src="https://docs.google.com/spreadsheets/d/18P98-diYqBhBCLzZ6r22-vtF4YPBeEvw2GKEYaA2FQA/edit?usp=sharing">
-                </iframe>
-            </div>
-        </div>
-        <div class="footer">
-            Dikelola melalui GitHub Pages &copy; 2024
-        </div>
+
+<div class="card">
+    <h2>Sajian Data Utama</h2>
+    <p>Klik tombol di bawah untuk melihat visualisasi report dan data mentah.</p>
+    
+    <button class="btn-trigger" id="toggleBtn" onclick="toggleDataLinks()">Tampilkan Sumber Data</button>
+
+    <div id="linkContainer" class="link-container">
+        <a href="https://datastudio.google.com/embed/reporting/8bda613c-edf9-4f2a-ab60-513dcb0a03dd/page/page_12345" target="_blank" class="data-link looker">
+            📊 Buka Looker Studio Report
+        </a>
+        <a href="https://docs.google.com/spreadsheets/d/18P98-diYqBhBCLzZ6r22-vtF4YPBeEvw2GKEYaA2FQA/edit?usp=sharing" target="_blank" class="data-link spreadsheet">
+            🟢 Buka Data Spreadsheet
+        </a>
     </div>
-    <script>
-        function showSection(sectionId) {
-            // Sembunyikan semua section
-            document.querySelectorAll('.data-section').forEach(section => {
-                section.style.display = 'none';
-            });
-            // Tampilkan yang dipilih
-            document.getElementById(sectionId).style.display = 'block';
-            // Update status tombol aktif
-            document.querySelectorAll('.btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.currentTarget.classList.add('active');
+</div>
+
+<script>
+    function toggleDataLinks() {
+        var container = document.getElementById("linkContainer");
+        var button = document.getElementById("toggleBtn");
+        
+        if (container.style.display === "none" || container.style.display === "") {
+            container.style.display = "flex";
+            button.textContent = "Sembunyikan Sumber Data";
+            button.style.backgroundColor = #6b7280; /* Berubah jadi abu-abu saat aktif */
+        } else {
+            container.style.display = "none";
+            button.textContent = "Tampilkan Sumber Data";
+            button.style.backgroundColor = "#4f46e5"; /* Kembali ke warna awal */
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
