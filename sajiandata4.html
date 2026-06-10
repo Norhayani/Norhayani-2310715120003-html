@@ -84,13 +84,10 @@
     </style>
 </head>
 <body>
-
 <div class="card">
     <h2>Sajian Data Utama</h2>
     <p>Klik tombol di bawah untuk melihat visualisasi report dan data mentah.</p>
-    
     <button class="btn-trigger" id="toggleBtn" onclick="toggleDataLinks()">Tampilkan Sumber Data</button>
-
     <div id="linkContainer" class="link-container">
         <a href="https://datastudio.google.com/embed/reporting/8bda613c-edf9-4f2a-ab60-513dcb0a03dd/page/page_12345" target="_blank" class="data-link looker">
             📊 Buka Looker Studio Report
@@ -100,12 +97,10 @@
         </a>
     </div>
 </div>
-
 <script>
     function toggleDataLinks() {
         var container = document.getElementById("linkContainer");
         var button = document.getElementById("toggleBtn");
-        
         if (container.style.display === "none" || container.style.display === "") {
             container.style.display = "flex";
             button.textContent = "Sembunyikan Sumber Data";
@@ -117,6 +112,5 @@
         }
     }
 </script>
-
 </body>
 </html>
