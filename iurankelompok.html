@@ -1,496 +1,70 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="ms">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Iuran KUB Nelayan</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Embed Google Form & Spreadsheet</title>
     <style>
-        /* =========================================
-           RESET & BASE
-           ========================================= */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background-color: #f0f4f8; color: #1e293b; }
-        .app-container { display: flex; min-height: 100vh; }
-        /* =========================================
-           SIDEBAR NAVIGATION
-           ========================================= */
-        .sidebar { width: 260px; background-color: #0f172a; color: white; display: flex; flex-direction: column; position: fixed; height: 100vh; }
-        .brand { padding: 25px 20px; background-color: #020617; text-align: center; border-bottom: 1px solid #1e293b; }
-        .brand h2 { font-size: 18px; color: #38bdf8; }
-        .brand p { font-size: 12px; color: #94a3b8; margin-top: 5px; }
-        
-        .nav-menu { list-style: none; padding: 20px 0; flex: 1; }
-        .nav-menu li { margin-bottom: 5px; }
-        .nav-menu a { display: flex; align-items: center; padding: 12px 20px; color: #cbd5e1; text-decoration: none; font-size: 14px; transition: 0.3s; cursor: pointer; border-left: 4px solid transparent; }
-        .nav-menu a:hover, .nav-menu a.active { background-color: #1e293b; color: white; border-left-color: #38bdf8; }
-        
-        /* Style Tambahan khusus Tombol Beranda di Sidebar */
-        .nav-menu a.btn-nav-home { background-color: #0284c7; color: white; font-weight: 600; margin-bottom: 15px; border-left-color: #38bdf8; }
-        .nav-menu a.btn-nav-home:hover { background-color: #0369a1; }
-
-        /* =========================================
-           MAIN CONTENT & HEADER
-           ========================================= */
-        .main-content { margin-left: 260px; flex: 1; padding: 30px; }
-        .header { background-color: #0284c7; color: white; padding: 20px 25px; border-radius: 8px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        .header h1 { font-size: 20px; font-weight: 600; }
-        .header-actions { display: flex; gap: 10px; align-items: center; }
-
-        /* Style Tambahan Tombol Beranda di Header */
-        .btn-header-home {
-            display: inline-flex; align-items: center; gap: 6px;
-            background-color: rgba(255, 255, 255, 0.15); color: white; padding: 10px 18px;
-            text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 600;
-            transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.25);
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
         }
-        .btn-header-home:hover { background-color: rgba(255, 255, 255, 0.3); }
-
-        /* =========================================
-           TOMBOL DOWNLOAD & TOOLTIP (CSS ONLY)
-           ========================================= */
-        .btn-download {
-            position: relative; 
-            display: inline-flex; align-items: center; gap: 8px;
-            background-color: #10b981; color: white; padding: 10px 18px;
-            text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 600;
-            transition: all 0.3s ease; cursor: pointer; border: none;
-        }
-        .btn-download:hover { background-color: #059669; }
-
-        .btn-download::after {
-            content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
-            background-color: #1e293b; color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px;
-            white-space: nowrap; opacity: 0; visibility: hidden; transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 10; font-weight: 400;
-        }
-        .btn-download::before {
-            content: ""; position: absolute; bottom: 80%; left: 50%; transform: translateX(-50%);
-            border-width: 6px; border-style: solid; border-color: #1e293b transparent transparent transparent;
-            opacity: 0; visibility: hidden; transition: all 0.3s ease;
-        }
-        .btn-download:hover::after { opacity: 1; visibility: visible; bottom: 130%; }
-        .btn-download:hover::before { opacity: 1; visibility: visible; bottom: 105%; }
-
-        /* =========================================
-           GRID LAYOUT (FORM KIRI, LIVE REPORT KANAN)
-           ========================================= */
-        .grid-container { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
-
-        /* =========================================
-           FORM SECTION
-           ========================================= */
-        .content-section { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .content-section h2 { font-size: 16px; margin-bottom: 20px; color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .active-kub-badge { background-color: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-        
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: #475569; }
-        .form-control { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; font-size: 13px; outline: none; transition: 0.2s; }
-        .form-control:focus { border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1); }
-        
-        .btn-submit { background-color: #0284c7; color: white; border: none; padding: 12px 20px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 5px; }
-        .btn-submit:hover { background-color: #0369a1; }
-        .btn-submit:disabled { background-color: #94a3b8; cursor: not-allowed; }
-
-        #status-msg { margin-top: 15px; padding: 10px; border-radius: 6px; display: none; font-size: 13px; text-align: center; font-weight: 500; }
-        .status-success { background-color: #d1fae5; color: #065f46; border: 1px solid #34d399; }
-        .status-error { background-color: #fee2e2; color: #991b1b; border: 1px solid #f87171; }
-
-        /* =========================================
-           LIVE REPORT SECTION
-           ========================================= */
-        .live-badge { display: flex; align-items: center; gap: 6px; background-color: #fee2e2; color: #dc2626; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
-        .pulse-dot { width: 8px; height: 8px; background-color: #dc2626; border-radius: 50%; animation: pulse 1.5s infinite; }
-        @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(220, 38, 38, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
-        }
-
-        .history-list { list-style: none; overflow: hidden; margin-top: 10px; }
-        .history-item { 
-            padding: 12px; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 10px; 
-            display: flex; justify-content: space-between; align-items: center; background-color: #f8fafc;
-            animation: slideDownFadeIn 0.5s ease forwards;
-        }
-        @keyframes slideDownFadeIn {
-            0% { opacity: 0; transform: translateY(-15px); background-color: #dbeafe; }
-            100% { opacity: 1; transform: translateY(0); background-color: #f8fafc; }
-        }
-        .item-info strong { display: block; font-size: 13px; color: #0f172a; margin-bottom: 2px; }
-        .item-info span { font-size: 11px; color: #64748b; }
-        .item-amount { font-size: 14px; font-weight: 700; color: #10b981; }
-
-        @media (max-width: 768px) {
-            .sidebar { display: none; } 
-            .main-content { margin-left: 0; }
-            .header { flex-direction: column; gap: 15px; align-items: flex-start; }
-            .header-actions { width: 100%; justify-content: space-between; }
-            .grid-container { grid-template-columns: 1fr; }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="app-container">
-        <aside class="sidebar">
-            <div class="brand">
-                <h2>Iuran KUB</h2>
-                <p>Sistem Pencatatan Iuran</p>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="index.html" class="btn-nav-home">🏠 Kembali ke Beranda</a></li>
-                
-                <li><a class="nav-link active" data-kub="KUB Sumber Makmur">🌊 KUB Sumber Makmur</a></li>
-                <li><a class="nav-link" data-kub="KUB Angsa Laut">🚢 KUB Angsa Laut</a></li>
-                <li><a class="nav-link" data-kub="KUB Intimung Taka">⭐ KUB Intimung Taka</a></li>
-                <li><a class="nav-link" data-kub="KUB Usaha Bersama">🤝 KUB Usaha Bersama</a></li>
-            </ul>
-        </aside>
-
-        <main class="main-content">
-            <header class="header">
-                <h1 id="header-title">Dashboard Iuran: KUB Sumber Makmur</h1>
-                <div class="header-actions">
-                    <a href="index.html" class="btn-header-home">🏠 Beranda</a>
-                    <a href="#" id="btn-excel-download" class="btn-download" data-tooltip="Klik untuk mengunduh Laporan Iuran format .xlsx" target="_blank">
-                        📥 Unduh Rekap
-                    </a>
-                </div>
-            </header>
-
-            <div class="grid-container">
-                <div class="content-section">
-                    <h2>
-                        ➕ Form Setor Iuran
-                        <span class="active-kub-badge" id="badge-kub">Tujuan: KUB Sumber Makmur</span>
-                    </h2>
-                    
-                    <form id="iuranForm">
-                        <input type="hidden" id="nama_kub" name="nama_kub" value="KUB Sumber Makmur">
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Waktu & Tanggal Pengisian</label>
-                                <input type="datetime-local" id="waktu_tanggal" name="waktu_tanggal" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Nama Penyetor / Pengisi</label>
-                                <input type="text" id="nama_pengisi" name="nama_pengisi" class="form-control" placeholder="Contoh: Budi Santoso" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Nominal Iuran (Rp)</label>
-                            <input type="number" id="nominal" name="nominal" class="form-control" placeholder="Contoh: 50000" min="1000" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Keterangan</label>
-                            <input type="text" id="keterangan" name="keterangan" class="form-control" placeholder="Contoh: Iuran wajib bulan Mei" required>
-                        </div>
-
-                        <button type="submit" id="submitBtn" class="btn-submit">Kirim Data Iuran ke Spreadsheet</button>
-                        <div id="status-msg"></div>
-                    </form>
-                </div>
-
-                <div class="content-section">
-                    <h2>
-                        Riwayat Setoran
-                        <div class="live-badge">
-                            <div class="pulse-dot"></div>
-                            LIVE
-                        </div>
-                    </h2>
-                    <ul class="history-list" id="live-feed">
-                        <li class="history-item">
-                            <div class="item-info">
-                                <strong>Menunggu setoran...</strong>
-                                <span>Sistem siap menerima data.</span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <script>
-       const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw9JZc3AYFCCAIZ37GJUeK_N1nnWa-155W5dLdmCacfM6o6j-wIjEWA-YNQ7bBRyBOrPQ/exec'; 
-        const SHEET_ID = '1RgyVkhFbBeGEL-x9O7iiVdl_yShqwQwRtNa8gM0AOlo';
-        const btnExcel = document.getElementById('btn-excel-download');
-        btnExcel.href = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=xlsx&gid=0`;
-
-        const navLinks = document.querySelectorAll('.nav-link:not(.btn-nav-home)');
-        const headerTitle = document.getElementById('header-title');
-        const badgeKub = document.getElementById('badge-kub');
-        const inputNamaKub = document.getElementById('nama_kub');
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                navLinks.forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-                
-                const selectedKUB = this.getAttribute('data-kub');
-                headerTitle.innerText = "Dashboard Iuran: " + selectedKUB;
-                badgeKub.innerText = "Tujuan: " + selectedKUB;
-                inputNamaKub.value = selectedKUB;
-            });
-        });
-
-        const setWaktuSekarang = () => {
-            const now = new Date();
-            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-            document.getElementById('waktu_tanggal').value = now.toISOString().slice(0,16);
-        };
-        setWaktuSekarang();
-
-        const form = document.getElementById('iuranForm');
-        const submitBtn = document.getElementById('submitBtn');
-        const statusMsg = document.getElementById('status-msg');
-        const feedContainer = document.getElementById('live-feed');
-
-        const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(angka);
-
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Mengirim data...';
-            
-            const namaPenanda = document.getElementById('nama_pengisi').value;
-            const kubPenanda = document.getElementById('nama_kub').value;
-            const ketPenanda = document.getElementById('keterangan').value;
-            const nominalPenanda = document.getElementById('nominal').value;
-
-            const formData = new FormData(form);
-            const data = new URLSearchParams();
-            for (const pair of formData) { data.append(pair[0], pair[1]); }
-
-            fetch(SCRIPT_URL, { method: 'POST', body: data })
-            .then(response => response.json())
-            .then(result => {
-                if(result.result === "success") {
-                    statusMsg.className = 'status-success';
-                    statusMsg.innerText = '✅ Data berhasil terkirim ke Google Sheets!';
-                    
-                    const waktuSekarang = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-                    const li = document.createElement('li');
-                    li.className = 'history-item';
-                    li.innerHTML = `
-                        <div class="item-info">
-                            <strong>${namaPenanda} - ${kubPenanda}</strong>
-                            <span>${ketPenanda} • Baru saja (${waktuSekarang})</span>
-                        </div>
-                        <div class="item-amount">+ ${formatRupiah(nominalPenanda)}</div>
-                    `;
-                    feedContainer.prepend(li);
-                    
-                    form.reset();
-                    setWaktuSekarang();
-                    document.getElementById('nama_kub').value = kubPenanda; 
-                } else { throw new Error("Gagal"); }
-            })
-            .catch(error => {
-                statusMsg.className = 'status-error';
-                statusMsg.innerText = '❌ Terjadi kesalahan koneksi ke Spreadsheet.';
-            })
-            .finally(() => {
-                statusMsg.style.display = 'block';
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'Kirim Data Iuran ke Spreadsheet';
-                setTimeout(() => { statusMsg.style.display = 'none'; }, 5000);
-            });
-        });
-    </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Portal Data</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* =========================================
-           RESET & BASE
-           ========================================= */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #1e293b; }
-        .app-container { display: flex; min-height: 100vh; }
-
-        /* =========================================
-           SIDEBAR NAVIGATION
-           ========================================= */
-        .sidebar { width: 260px; background-color: #0f172a; color: white; display: flex; flex-direction: column; position: fixed; height: 100vh; }
-        .brand { padding: 25px 20px; background-color: #020617; text-align: center; border-bottom: 1px solid #1e293b; }
-        .brand h2 { font-size: 18px; color: #38bdf8; }
-        .brand p { font-size: 12px; color: #94a3b8; margin-top: 5px; }
-        
-        .nav-menu { list-style: none; padding: 20px 0; flex: 1; }
-        .nav-menu li { margin-bottom: 5px; }
-        .nav-menu a { display: flex; align-items: center; padding: 12px 20px; color: #cbd5e1; text-decoration: none; font-size: 14px; transition: 0.3s; cursor: pointer; border-left: 4px solid transparent; }
-        .nav-menu a:hover, .nav-menu a.active { background-color: #1e293b; color: white; border-left-color: #38bdf8; }
-        .nav-menu a span { margin-right: 10px; font-size: 16px; }
-
-        /* =========================================
-           MAIN CONTENT & HEADER
-           ========================================= */
-        .main-content { margin-left: 260px; flex: 1; padding: 30px; }
-        .header { background-color: #0284c7; color: white; padding: 20px 25px; border-radius: 12px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        .header h1 { font-size: 22px; font-weight: 600; }
-        .header p { font-size: 14px; color: #e0f2fe; margin-top: 5px; }
-
-        /* =========================================
-           GRID LAYOUT & CARDS
-           ========================================= */
-        .grid-container { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 25px; 
-        }
-
-        .card {
-            background: white;
-            padding: 35px 25px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-            text-align: center;
-            border: 1px solid #e2e8f0;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-
-        .icon-box {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            margin: 0 auto 20px;
-        }
-
-        /* Variasi Warna Icon Box */
-        .icon-form { background-color: #e0f2fe; color: #0284c7; }
-        .icon-sheet { background-color: #d1fae5; color: #10b981; }
-        .icon-looker { background-color: #e0e7ff; color: #4f46e5; }
-        .icon-survey { background-color: #fef08a; color: #ca8a04; }
-
-        .card h2 { font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 12px; }
-        .card p { font-size: 14px; color: #64748b; line-height: 1.6; margin-bottom: 25px; flex-grow: 1; }
-
-        /* =========================================
-           BUTTONS
-           ========================================= */
-        .btn {
-            display: inline-block;
-            width: 100%;
-            color: white;
-            padding: 12px 20px;
-            text-decoration: none;
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
             border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-        
-        .btn-form { background-color: #0284c7; box-shadow: 0 4px 6px rgba(2, 132, 199, 0.2); }
-        .btn-form:hover { background-color: #0369a1; }
-
-        .btn-sheet { background-color: #10b981; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2); }
-        .btn-sheet:hover { background-color: #059669; }
-
-        .btn-looker { background-color: #4f46e5; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2); }
-        .btn-looker:hover { background-color: #4338ca; }
-
-        .btn-survey { background-color: #eab308; box-shadow: 0 4px 6px rgba(234, 179, 8, 0.2); }
-        .btn-survey:hover { background-color: #ca8a04; }
-
-        /* =========================================
-           RESPONSIVE
-           ========================================= */
-        @media (max-width: 768px) {
-            .sidebar { display: none; } 
-            .main-content { margin-left: 0; padding: 15px; }
-            .header { border-radius: 8px; }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        h2:first-of-type {
+            margin-top: 0;
+        }
+        .embed-wrapper {
+            margin-bottom: 30px;
+        }
+        iframe {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <div class="brand">
-                <h2>Portal Sistem</h2>
-                <p>Navigasi Data & Pelaporan</p>
-            </div>
-            <ul class="nav-menu">
-                <li><a class="active"><span>🏠</span> Beranda</a></li>
-                <li><a href="#google-form"><span>📋</span> Input Data (Form)</a></li>
-                <li><a href="#spreadsheet"><span>📊</span> Database (Sheet)</a></li>
-                <li><a href="#looker-studio"><span>📈</span> Visualisasi (Looker)</a></li>
-                <li><a href="#kepuasan"><span>⭐</span> Survey Kepuasan</a></li>
-            </ul>
-        </aside>
+<div class="container">
 
-        <!-- MAIN CONTENT -->
-        <main class="main-content">
-            <header class="header">
-                <div>
-                    <h1>Dashboard Navigasi Terpadu</h1>
-                    <p>Silakan pilih menu di bawah ini untuk mengelola data, melihat laporan, atau mengisi evaluasi.</p>
-                </div>
-            </header>
-
-            <div class="grid-container">
-                
-                <!-- CARD 1: LAPORAN KEUANGAN -->
-                <div class="card" id="laporan-keuangan">
-                    <div class="icon-box icon-form">📋</div>
-                    <h2>Laporan Keuangan (Iuran Kelompok)</h2>
-                    <p>Buka laporan keuangan iuran kelompok untuk melihat hasilnya.</p>
-                    <a href="https://docs.google.com/spreadsheets/d/1RgyVkhFbBeGEL-x9O7iiVdl_yShqwQwRtNa8gM0AOlo/edit?usp=sharing" target="_blank" class="btn btn-form">Buka laporan keuangan</a>
-                </div>
-
-                <!-- CARD 2: SPREADSHEET TINGKAT KEPUASAN -->
-                <div class="card" id="spreadsheet tingkat kepuasan">
-                    <div class="icon-box icon-sheet">📊</div>
-                    <h2>Data Spreadsheet Tingkat Kepuasan</h2>
-                    <p>Akses database mentah di Google Sheets untuk melihat rekapitulasi data yang telah masuk.</p>
-                    <a href="https://docs.google.com/spreadsheets/d/1zqEsYruvoExfJmBahZgeMQ5IeU_HKSPNvBqDy6DnNRE/edit?usp=sharing" target="_blank" class="btn btn-sheet">Lihat Database</a>
-                </div>
-                <!-- CARD 3: LOOKER STUDIO LAPORAN KEUANGAN -->
-                <div class="card" id="looker-studio laporan keuangan">
-                    <div class="icon-box icon-looker">📈</div>
-                    <h2>Looker Studio Laporan Keuangan </h2>
-                    <p>Lihat visualisasi data, grafik analitik interaktif, dan sajian dashboard pelaporan secara real-time.</p>
-                    <a href="https://datastudio.google.com/reporting/2182c6d8-73e3-49f9-b72d-f46f6259d31e" target="_blank" class="btn btn-looker">Buka Dashboard</a>
-                </div>
-
-                <!-- CARD 4: TINGKAT KEPUASAN -->
-                <div class="card" id="kepuasan">
-                    <div class="icon-box icon-survey">⭐</div>
-                    <h2>Tingkat Kepuasan</h2>
-                    <p>Isi kuesioner tingkat kepuasan untuk membantu kami mengevaluasi dan meningkatkan sistem.</p>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeTcDGewZtKK5Zum_nTtONMoEP7-bsxiKnoSLF71q60yiEMDg/viewform?usp=dialog" target="_blank" class="btn btn-survey">Isi Survey</a>
-                </div>
-
-            </div>
-        </main>
+    <div class="embed-wrapper">
+        <h2>Google Form</h2>
+        <iframe 
+            src="https://docs.google.com/forms/d/e/1FAIpQLSdZJIHfw-c40O72GHYrbWOUzy5qVVih46SMIdwIkBCL3ZDeIA/viewform?embedded=true" 
+            height="800" 
+            frameborder="0" 
+            marginheight="0" 
+            marginwidth="0">
+            Memuatkan...
+        </iframe>
     </div>
+
+    <div class="embed-wrapper">
+        <h2>Google Spreadsheet</h2>
+        <iframe 
+            src="https://docs.google.com/spreadsheets/d/1vFggRM9I6vVPaXAVsrxmiOJ1Teul_PiFi3D4lcFcuDk/preview" 
+            height="500" 
+            frameborder="0">
+            Memuatkan...
+        </iframe>
+    </div>
+
+</div>
 
 </body>
 </html>
