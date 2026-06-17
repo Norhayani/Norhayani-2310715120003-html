@@ -22,6 +22,30 @@
             overflow: hidden;
         }
 
+        /* Gaya untuk Header / Tombol Beranda */
+        .header-bar {
+            background-color: #ecf0f1;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: flex-start; /* Meletakkan butang di sebelah kiri */
+            border-bottom: 1px solid #ddd;
+        }
+
+        .btn-beranda {
+            background-color: #e74c3c; /* Warna merah untuk menonjolkan butang kembali */
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-beranda:hover {
+            background-color: #c0392b;
+        }
+
         /* Gaya untuk Navigasi (Menu Tab) */
         .navbar {
             display: flex;
@@ -35,8 +59,8 @@
             border: none;
             outline: none;
             cursor: pointer;
-            padding: 16px 10px;
-            font-size: 15px;
+            padding: 16px 20px;
+            font-size: 16px;
             font-weight: bold;
             transition: 0.3s;
         }
@@ -83,11 +107,14 @@
 
 <div class="container">
     
+    <div class="header-bar">
+        <a href="https://faroukmuhamad-gif.github.io/DEMO-TUGAS/" class="btn-beranda">⬅ Kembali ke Beranda</a>
+    </div>
+
     <div class="navbar">
         <button class="tab-link active" onclick="openTab(event, 'Formulir')">Google Formulir</button>
         <button class="tab-link" onclick="openTab(event, 'Spreadsheet')">Data Spreadsheet</button>
-        <button class="tab-link" onclick="openTab(event, 'Kepuasan')">Form Kepuasan</button>
-        <button class="tab-link" onclick="openTab(event, 'DataKepuasan')">Data Kepuasan</button>
+        <button class="tab-link" onclick="openTab(event, 'Kepuasan')">Form Tingkat Kepuasan</button>
     </div>
 
     <div id="Formulir" class="tab-content" style="display: block;">
@@ -124,30 +151,25 @@
         </iframe>
     </div>
 
-    <div id="DataKepuasan" class="tab-content">
-        <h2>Data Respon Kepuasan</h2>
-        <iframe 
-            src="https://docs.google.com/spreadsheets/d/1zqEsYruvoExfJmBahZgeMQ5IeU_HKSPNvBqDy6DnNRE/edit?usp=sharing" 
-            height="700" 
-            frameborder="0">
-            Memuatkan...
-        </iframe>
-    </div>
 </div>
+
 <script>
     function openTab(evt, tabName) {
         // Isytiharkan pembolehubah
         var i, tabcontent, tablinks;
+
         // Dapatkan semua elemen dengan kelas "tab-content" dan sembunyikan
         tabcontent = document.getElementsByClassName("tab-content");
         for (i = 0; i < tabcontent.length; i++) {
             tabcontent[i].style.display = "none";
         }
+
         // Dapatkan semua elemen dengan kelas "tab-link" dan buang kelas "active"
         tablinks = document.getElementsByClassName("tab-link");
         for (i = 0; i < tablinks.length; i++) {
             tablinks[i].className = tablinks[i].className.replace(" active", "");
         }
+
         // Paparkan tab semasa, dan tambahkan kelas "active" pada butang yang diklik
         document.getElementById(tabName).style.display = "block";
         evt.currentTarget.className += " active";
