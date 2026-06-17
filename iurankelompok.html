@@ -27,12 +27,12 @@
             background-color: #ecf0f1;
             padding: 15px 20px;
             display: flex;
-            justify-content: flex-start; /* Meletakkan butang di sebelah kiri */
+            justify-content: flex-start;
             border-bottom: 1px solid #ddd;
         }
 
         .btn-beranda {
-            background-color: #e74c3c; /* Warna merah untuk menonjolkan butang kembali */
+            background-color: #e74c3c;
             color: white;
             padding: 10px 20px;
             text-decoration: none;
@@ -59,8 +59,8 @@
             border: none;
             outline: none;
             cursor: pointer;
-            padding: 16px 20px;
-            font-size: 16px;
+            padding: 16px 10px;
+            font-size: 15px;
             font-weight: bold;
             transition: 0.3s;
         }
@@ -114,7 +114,8 @@
     <div class="navbar">
         <button class="tab-link active" onclick="openTab(event, 'Formulir')">Google Formulir</button>
         <button class="tab-link" onclick="openTab(event, 'Spreadsheet')">Data Spreadsheet</button>
-        <button class="tab-link" onclick="openTab(event, 'Kepuasan')">Form Tingkat Kepuasan</button>
+        <button class="tab-link" onclick="openTab(event, 'Kepuasan')">Form Kepuasan</button>
+        <button class="tab-link" onclick="openTab(event, 'DataKepuasan')">Data Kepuasan</button>
     </div>
 
     <div id="Formulir" class="tab-content" style="display: block;">
@@ -147,6 +148,16 @@
             frameborder="0" 
             marginheight="0" 
             marginwidth="0">
+            Memuatkan...
+        </iframe>
+    </div>
+
+    <div id="DataKepuasan" class="tab-content">
+        <h2>Data Respon Kepuasan</h2>
+        <iframe 
+            src="https://docs.google.com/spreadsheets/d/1RgyVkhFbBeGEL-x9O7iiVdl_yShqwQwRtNa8gM0AOlo/preview" 
+            height="700" 
+            frameborder="0">
             Memuatkan...
         </iframe>
     </div>
