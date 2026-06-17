@@ -11,6 +11,7 @@
             background-color: #f0f2f5;
             color: #333;
         }
+
         /* Gaya untuk Container Utama */
         .container {
             max-width: 1000px;
@@ -20,11 +21,37 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             overflow: hidden;
         }
+
+        /* Gaya untuk Header / Tombol Beranda */
+        .header-bar {
+            background-color: #ecf0f1;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: flex-end; /* Letak butang di sebelah kanan */
+            border-bottom: 1px solid #ddd;
+        }
+
+        .btn-beranda {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-beranda:hover {
+            background-color: #c0392b;
+        }
+
         /* Gaya untuk Navigasi (Menu Tab) */
         .navbar {
             display: flex;
             background-color: #2c3e50;
         }
+
         .navbar button {
             background-color: inherit;
             color: white;
@@ -37,31 +64,37 @@
             font-weight: bold;
             transition: 0.3s;
         }
+
         /* Hover pada butang navigasi */
         .navbar button:hover {
             background-color: #34495e;
         }
+
         /* Butang navigasi yang sedang aktif */
         .navbar button.active {
             background-color: #3498db;
             color: white;
         }
+
         /* Gaya untuk kandungan dalam tab */
         .tab-content {
             display: none; /* Disembunyikan secara lalai */
             padding: 20px;
             animation: fadeEffect 1s; /* Animasi apabila bertukar tab */
         }
+
         /* Animasi pudar */
         @keyframes fadeEffect {
             from {opacity: 0;}
             to {opacity: 1;}
         }
+
         iframe {
             width: 100%;
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+
         h2 {
             margin-top: 0;
             color: #2c3e50;
@@ -71,11 +104,18 @@
     </style>
 </head>
 <body>
+
 <div class="container">
+    
+    <div class="header-bar">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeTcDGewZtKK5Zum_nTtONMoEP7-bsxiKnoSLF71q60yiEMDg/viewform?usp=dialog" class="btn-beranda">⬅ Kembali ke Beranda</a>
+    </div>
+
     <div class="navbar">
         <button class="tab-link active" onclick="openTab(event, 'Formulir')">Google Formulir</button>
         <button class="tab-link" onclick="openTab(event, 'Spreadsheet')">Data Spreadsheet</button>
     </div>
+
     <div id="Formulir" class="tab-content" style="display: block;">
         <h2>Isi Formulir di Bawah</h2>
         <iframe 
@@ -87,34 +127,41 @@
             Memuatkan...
         </iframe>
     </div>
+
     <div id="Spreadsheet" class="tab-content">
         <h2>Data Respon Spreadsheet</h2>
         <iframe 
-            src="https://docs.google.com/spreadsheets/d/1vFggRM9I6vVPaXAVsrxmiOJ1Teul_PiFi3D4lcFcuDk/preview" 
+            src="https://docs.google.com/spreadsheets/d/1zqEsYruvoExfJmBahZgeMQ5IeU_HKSPNvBqDy6DnNRE/preview" 
             height="700" 
             frameborder="0">
             Memuatkan...
         </iframe>
     </div>
+
 </div>
+
 <script>
     function openTab(evt, tabName) {
         // Isytiharkan pembolehubah
         var i, tabcontent, tablinks;
+
         // Dapatkan semua elemen dengan kelas "tab-content" dan sembunyikan
         tabcontent = document.getElementsByClassName("tab-content");
         for (i = 0; i < tabcontent.length; i++) {
             tabcontent[i].style.display = "none";
         }
+
         // Dapatkan semua elemen dengan kelas "tab-link" dan buang kelas "active"
         tablinks = document.getElementsByClassName("tab-link");
         for (i = 0; i < tablinks.length; i++) {
             tablinks[i].className = tablinks[i].className.replace(" active", "");
         }
+
         // Paparkan tab semasa, dan tambahkan kelas "active" pada butang yang diklik
         document.getElementById(tabName).style.display = "block";
         evt.currentTarget.className += " active";
     }
 </script>
+
 </body>
 </html>
