@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Navigasi Google Form & Spreadsheet</title>
+    <title>Navigasi Google Form, Spreadsheet & Dashboard</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -11,6 +11,7 @@
             background-color: #f0f2f5;
             color: #333;
         }
+
         /* Gaya untuk Container Utama */
         .container {
             max-width: 1000px;
@@ -49,12 +50,13 @@
         .navbar {
             display: flex;
             background-color: #2c3e50;
+            flex-wrap: wrap; /* Supaya butang turun ke baris baharu jika skrin kecil */
         }
 
         .navbar button {
             background-color: inherit;
             color: white;
-            flex: 1; /* Membuat butang sama rata ukurannya */
+            flex: 1;
             border: none;
             outline: none;
             cursor: pointer;
@@ -62,6 +64,7 @@
             font-size: 15px;
             font-weight: bold;
             transition: 0.3s;
+            min-width: 130px; /* Lebar minimum butang */
         }
 
         /* Hover pada butang navigasi */
@@ -77,9 +80,9 @@
 
         /* Gaya untuk kandungan dalam tab */
         .tab-content {
-            display: none; /* Disembunyikan secara lalai */
+            display: none;
             padding: 20px;
-            animation: fadeEffect 1s; /* Animasi apabila bertukar tab */
+            animation: fadeEffect 1s;
         }
 
         /* Animasi pudar */
@@ -115,6 +118,7 @@
         <button class="tab-link" onclick="openTab(event, 'Spreadsheet')">Data Spreadsheet</button>
         <button class="tab-link" onclick="openTab(event, 'Kepuasan')">Form Kepuasan</button>
         <button class="tab-link" onclick="openTab(event, 'DataKepuasan')">Data Kepuasan</button>
+        <button class="tab-link" onclick="openTab(event, 'Dashboard')">Dashboard</button>
     </div>
 
     <div id="Formulir" class="tab-content" style="display: block;">
@@ -133,7 +137,6 @@
         <h2>Data Respon Spreadsheet</h2>
         <iframe 
             src="https://docs.google.com/spreadsheets/d/1vFggRM9I6vVPaXAVsrxmiOJ1Teul_PiFi3D4lcFcuDk/preview" 
-             src="https://datastudio.google.com/embed/reporting/4c0b275c-8161-4314-9db6-f34c9cae5b53/page/page_12345" 
             height="700" 
             frameborder="0">
             Memuatkan...
@@ -155,9 +158,21 @@
     <div id="DataKepuasan" class="tab-content">
         <h2>Data Respon Kepuasan</h2>
         <iframe 
-            src="https://docs.google.com/spreadsheets/d/1zqEsYruvoExfJmBahZgeMQ5IeU_HKSPNvBqDy6DnNRE/edit?usp=sharing" 
+            src="https://docs.google.com/spreadsheets/d/1zqEsYruvoExfJmBahZgeMQ5IeU_HKSPNvBqDy6DnNRE/preview" 
             height="700" 
             frameborder="0">
+            Memuatkan...
+        </iframe>
+    </div>
+
+    <div id="Dashboard" class="tab-content">
+        <h2>Dashboard Looker Studio</h2>
+        <iframe 
+            src="https://lookerstudio.google.com/embed/reporting/4c0b275c-8161-4314-9db6-f34c9cae5b53/page/page_12345" 
+            height="700" 
+            frameborder="0"
+            style="border:0" 
+            allowfullscreen>
             Memuatkan...
         </iframe>
     </div>
@@ -166,7 +181,6 @@
 
 <script>
     function openTab(evt, tabName) {
-        // Isytiharkan pembolehubah
         var i, tabcontent, tablinks;
 
         // Dapatkan semua elemen dengan kelas "tab-content" dan sembunyikan
