@@ -1,198 +1,383 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Navigasi Google Form, Spreadsheet & Dashboard</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            background-color: #f0f2f5;
-            color: #333;
-        }
-        /* Gaya untuk Container Utama */
-        .container {
-            max-width: 1000px;
-            margin: 40px auto;
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        /* Gaya untuk Header / Tombol Beranda */
-        .header-bar {
-            background-color: #ecf0f1;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: flex-start;
-            border-bottom: 1px solid #ddd;
-        }
-        .btn-beranda {
-            background-color: #e74c3c;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 14px;
-            transition: background-color 0.3s;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal Sistem Informasi & Navigasi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #f4f7f6;
+      --card: #ffffff;
+      --primary: #1abc9c;
+      --primary-dark: #16a085;
+      --sidebar: #2c3e50;
+      --sidebar-dark: #1a252f;
+      --text: #2d3436;
+      --muted: #636e72;
+      --line: #e5e7eb;
+      --shadow: 0 10px 30px rgba(0,0,0,.08);
+      --radius: 18px;
+      --sidebar-w: 260px;
+      --sidebar-c: 76px;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(26,188,156,.10), transparent 30%),
+        radial-gradient(circle at right top, rgba(52,152,219,.09), transparent 26%),
+        var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+    
+    .layout { display: flex; min-height: 100vh; }
+    
+    /* Tombol Toggle Mobile */
+    .mobile-toggle {
+      display: none;
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 60;
+      width: 46px;
+      height: 46px;
+      border: none;
+      border-radius: 14px;
+      background: var(--sidebar-dark);
+      color: #fff;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-c);
+      background: linear-gradient(180deg, var(--sidebar) 0%, #233140 100%);
+      color: #ecf0f1;
+      position: fixed;
+      inset: 0 auto 0 0;
+      z-index: 50;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: transform .3s ease, width .3s ease;
+    }
+    .sidebar.open,
+    .sidebar:hover { width: var(--sidebar-w); }
+    
+    .brand {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 18px;
+      background: var(--sidebar-dark);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      white-space: nowrap;
+    }
+    .brand i { color: var(--primary); font-size: 24px; min-width: 28px; text-align: center; }
+    .brand h2 {
+      font-size: 16px;
+      font-weight: 700;
+      opacity: 0;
+      transition: .25s ease;
+    }
+    .sidebar.open .brand h2,
+    .sidebar:hover .brand h2 { opacity: 1; }
+    
+    .sidebar-menu { list-style: none; padding: 12px 0; }
+    .menu-item { margin: 6px 10px; }
+    
+    .menu-toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px;
+      border: none;
+      background: transparent;
+      color: #cbd5e1;
+      cursor: pointer;
+      border-radius: 14px;
+      transition: .25s ease;
+      font: inherit;
+      text-align: left;
+    }
+    .menu-toggle i { width: 28px; text-align: center; font-size: 18px; }
+    .menu-label { opacity: 0; transition: .25s ease; white-space: nowrap; font-size: 14px; font-weight: 500; }
+    
+    .sidebar.open .menu-label,
+    .sidebar:hover .menu-label { opacity: 1; }
+    
+    .menu-toggle:hover,
+    .menu-toggle.active { background: rgba(255,255,255,.08); color: #fff; }
+    .menu-toggle.active { background: var(--primary); color: #fff; }
+    
+    /* Area Utama Konten */
+    .main {
+      margin-left: var(--sidebar-c);
+      width: calc(100% - var(--sidebar-c));
+      padding: 20px;
+      transition: margin-left .3s ease, width .3s ease;
+    }
+    .sidebar.open ~ .main,
+    .sidebar:hover ~ .main {
+      margin-left: var(--sidebar-w);
+      width: calc(100% - var(--sidebar-w));
+    }
+    
+    /* Topbar */
+    .topbar {
+      background: rgba(255,255,255,.72);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.7);
+      box-shadow: var(--shadow);
+      border-radius: 22px;
+      padding: 18px 20px;
+      margin-bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .topbar h1 { font-size: 22px; color: #1f2d3d; margin-bottom: 4px; }
+    .topbar p { color: var(--muted); font-size: 13px; }
+    .top-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: #fff;
+      color: #34495e;
+      border: 1px solid var(--line);
+      font-size: 13px;
+      box-shadow: 0 4px 14px rgba(0,0,0,.04);
+      text-decoration: none;
+      font-weight: 600;
+      transition: .25s ease;
+    }
+    .btn-nav-back {
+      background: #e74c3c;
+      color: #fff;
+      border: none;
+    }
+    .btn-nav-back:hover {
+      background: #c0392b;
+      transform: translateY(-2px);
+    }
+    
+    /* Bagian Konten / Sections */
+    .section { display: none; animation: fadeIn .35s ease; }
+    .section.active { display: block; }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.6);
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+    .section-title { font-size: 20px; margin-bottom: 16px; color: #213547; display: flex; align-items: center; gap: 10px; }
+    
+    iframe {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    }
 
-        .btn-beranda:hover {
-            background-color: #c0392b;
-        }
-
-        /* Gaya untuk Navigasi (Menu Tab) */
-        .navbar {
-            display: flex;
-            background-color: #2c3e50;
-            flex-wrap: wrap; /* Supaya butang turun ke baris baharu jika skrin kecil */
-        }
-
-        .navbar button {
-            background-color: inherit;
-            color: white;
-            flex: 1;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 16px 10px;
-            font-size: 15px;
-            font-weight: bold;
-            transition: 0.3s;
-            min-width: 130px; /* Lebar minimum butang */
-        }
-
-        /* Hover pada butang navigasi */
-        .navbar button:hover {
-            background-color: #34495e;
-        }
-
-        /* Butang navigasi yang sedang aktif */
-        .navbar button.active {
-            background-color: #3498db;
-            color: white;
-        }
-
-        /* Gaya untuk kandungan dalam tab */
-        .tab-content {
-            display: none;
-            padding: 20px;
-            animation: fadeEffect 1s;
-        }
-
-        /* Animasi pudar */
-        @keyframes fadeEffect {
-            from {opacity: 0;}
-            to {opacity: 1;}
-        }
-
-        iframe {
-            width: 100%;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        h2 {
-            margin-top: 0;
-            color: #2c3e50;
-            border-bottom: 2px solid #f0f2f5;
-            padding-bottom: 10px;
-        }
-    </style>
+    /* Responsif untuk Mobile */
+    @media (max-width: 768px) {
+      .mobile-toggle { display: flex; }
+      .sidebar { transform: translateX(-100%); width: var(--sidebar-w); }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0 !important; width: 100% !important; padding-top: 76px; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
+<div class="layout">
+  
+  <button class="mobile-toggle" onclick="toggleSidebar()">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <div class="sidebar" id="sidebar">
+    <div class="brand">
+      <i class="fa-solid fa-layer-group"></i>
+      <h2>Sistem Informasi</h2>
+    </div>
+    <ul class="sidebar-menu">
+      <li class="menu-item">
+        <button class="menu-toggle active" onclick="openTab(event, 'Formulir')">
+          <i class="fa-solid fa-file-pen"></i>
+          <span class="menu-label">Google Formulir</span>
+        </button>
+      </li>
+      <li class="menu-item">
+        <button class="menu-toggle" onclick="openTab(event, 'Spreadsheet')">
+          <i class="fa-solid fa-table"></i>
+          <span class="menu-label">Data Spreadsheet</span>
+        </button>
+      </li>
+      <li class="menu-item">
+        <button class="menu-toggle" onclick="openTab(event, 'Kepuasan')">
+          <i class="fa-solid fa-square-poll-horizontal"></i>
+          <span class="menu-label">Form Kepuasan</span>
+        </button>
+      </li>
+      <li class="menu-item">
+        <button class="menu-toggle" onclick="openTab(event, 'DataKepuasan')">
+          <i class="fa-solid fa-database"></i>
+          <span class="menu-label">Data Kepuasan</span>
+        </button>
+      </li>
+      <li class="menu-item">
+        <button class="menu-toggle" onclick="openTab(event, 'Dashboard')">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span class="menu-label">Dashboard</span>
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <div class="main">
     
-    <div class="header-bar">
-        <a href="https://faroukmuhamad-gif.github.io/DEMO-TUGAS/" class="btn-beranda">⬅ Kembali ke Beranda</a>
+    <div class="topbar">
+      <div>
+        <h1 id="page-title">Google Formulir</h1>
+        <p>Portal Integrasi Google Form, Spreadsheet & Looker Studio Dashboard</p>
+      </div>
+      <div class="top-actions">
+        <a href="https://faroukmuhamad-gif.github.io/DEMO-TUGAS/" class="pill btn-nav-back">
+          <i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda
+        </a>
+      </div>
     </div>
 
-    <div class="navbar">
-        <button class="tab-link active" onclick="openTab(event, 'Formulir')">Google Formulir</button>
-        <button class="tab-link" onclick="openTab(event, 'Spreadsheet')">Data Spreadsheet</button>
-        <button class="tab-link" onclick="openTab(event, 'Kepuasan')">Form Kepuasan</button>
-        <button class="tab-link" onclick="openTab(event, 'DataKepuasan')">Data Kepuasan</button>
-        <button class="tab-link" onclick="openTab(event, 'Dashboard')">Dashboard</button>
+    <div id="Formulir" class="section active">
+      <div class="card">
+        <h2 class="section-title"><i class="fa-solid fa-file-pen" style="color:var(--primary)"></i> Isi Formulir di Bawah</h2>
+        <iframe 
+          src="https://docs.google.com/forms/d/e/1FAIpQLSdZJIHfw-c40O72GHYrbWOUzy5qVVih46SMIdwIkBCL3ZDeIA/viewform?embedded=true" 
+          height="700" 
+          frameborder="0" 
+          marginheight="0" 
+          marginwidth="0">
+          Memuatkan...
+        </iframe>
+      </div>
     </div>
 
-    <div id="Formulir" class="tab-content" style="display: block;">
-        <h2>Isi Formulir di Bawah</h2>
+    <div id="Spreadsheet" class="section">
+      <div class="card">
+        <h2 class="section-title"><i class="fa-solid fa-table" style="color:#27ae60"></i> Data Respon Spreadsheet</h2>
         <iframe 
-            src="https://docs.google.com/forms/d/e/1FAIpQLSdZJIHfw-c40O72GHYrbWOUzy5qVVih46SMIdwIkBCL3ZDeIA/viewform?embedded=true" 
-            height="700" 
-            frameborder="0" 
-            marginheight="0" 
-            marginwidth="0">
-            Memuatkan...
+          src="https://docs.google.com/spreadsheets/d/1vFggRM9I6vVPaXAVsrxmiOJ1Teul_PiFi3D4lcFcuDk/preview" 
+          height="700" 
+          frameborder="0">
+          Memuatkan...
         </iframe>
-    </div>
-    <div id="Spreadsheet" class="tab-content">
-        <h2>Data Respon Spreadsheet</h2>
-        <iframe 
-            src="https://docs.google.com/spreadsheets/d/1vFggRM9I6vVPaXAVsrxmiOJ1Teul_PiFi3D4lcFcuDk/preview" 
-            height="700" 
-            frameborder="0">
-            Memuatkan...
-        </iframe>
+      </div>
     </div>
 
-    <div id="Kepuasan" class="tab-content">
-        <h2>Form Tingkat Kepuasan</h2>
+    <div id="Kepuasan" class="section">
+      <div class="card">
+        <h2 class="section-title"><i class="fa-solid fa-square-poll-horizontal" style="color:#e67e22"></i> Form Tingkat Kepuasan</h2>
         <iframe 
-            src="https://docs.google.com/forms/d/e/1FAIpQLSeTcDGewZtKK5Zum_nTtONMoEP7-bsxiKnoSLF71q60yiEMDg/viewform?embedded=true" 
-            height="700" 
-            frameborder="0" 
-            marginheight="0" 
-            marginwidth="0">
-            Memuatkan...
+          src="https://docs.google.com/forms/d/e/1FAIpQLSeTcDGewZtKK5Zum_nTtONMoEP7-bsxiKnoSLF71q60yiEMDg/viewform?embedded=true" 
+          height="700" 
+          frameborder="0" 
+          marginheight="0" 
+          marginwidth="0">
+          Memuatkan...
         </iframe>
+      </div>
     </div>
 
-    <div id="DataKepuasan" class="tab-content">
-        <h2>Data Respon Kepuasan</h2>
+    <div id="DataKepuasan" class="section">
+      <div class="card">
+        <h2 class="section-title"><i class="fa-solid fa-database" style="color:#2980b9"></i> Data Respon Kepuasan</h2>
         <iframe 
-            src="https://docs.google.com/spreadsheets/d/1zqEsYruvoExfJmBahZgeMQ5IeU_HKSPNvBqDy6DnNRE/edit?usp=sharing" 
-            height="700" 
-            frameborder="0">
-            Memuatkan...
+          src="https://docs.google.com/spreadsheets/d/1zqEsYruvoExfJmBahZgeMQ5IeU_HKSPNvBqDy6DnNRE/edit?usp=sharing" 
+          height="700" 
+          frameborder="0">
+          Memuatkan...
         </iframe>
+      </div>
     </div>
 
-    <div id="Dashboard" class="tab-content">
-        <h2>Dashboard Looker Studio</h2>
+    <div id="Dashboard" class="section">
+      <div class="card">
+        <h2 class="section-title"><i class="fa-solid fa-chart-pie" style="color:#9b59b6"></i> Dashboard Looker Studio</h2>
         <iframe 
-            src="https://datastudio.google.com/embed/reporting/60846f5b-a82f-4827-a87f-178c97d7de66/page/p_gdxppw4w4d" 
-            height="700" 
-            frameborder="0"
-            style="border:0" 
-            allowfullscreen>
-            Memuatkan...
+          src="https://datastudio.google.com/embed/reporting/60846f5b-a82f-4827-a87f-178c97d7de66/page/p_gdxppw4w4d" 
+          height="700" 
+          frameborder="0"
+          style="border:0" 
+          allowfullscreen>
+          Memuatkan...
         </iframe>
+      </div>
     </div>
+
+  </div>
 </div>
+
 <script>
-    function openTab(evt, tabName) {
-        var i, tabcontent, tablinks;
+  // Fungsi Sistem Navigasi Tab / Sidebar Menu
+  function openTab(evt, tabName) {
+    var i, sections, menuToggles;
 
-        // Dapatkan semua elemen dengan kelas "tab-content" dan sembunyikan
-        tabcontent = document.getElementsByClassName("tab-content");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-
-        // Dapatkan semua elemen dengan kelas "tab-link" dan buang kelas "active"
-        tablinks = document.getElementsByClassName("tab-link");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-
-        // Paparkan tab semasa, dan tambahkan kelas "active" pada butang yang diklik
-        document.getElementById(tabName).style.display = "block";
-        evt.currentTarget.className += " active";
+    // Sembunyikan seluruh section konten
+    sections = document.getElementsByClassName("section");
+    for (i = 0; i < sections.length; i++) {
+      sections[i].classList.remove("active");
     }
+
+    // Buang status class active dari seluruh tombol menu sidebar
+    menuToggles = document.getElementsByClassName("menu-toggle");
+    for (i = 0; i < menuToggles.length; i++) {
+      menuToggles[i].classList.remove("active");
+    }
+
+    // Tampilkan section saat ini dan set menu terpilih menjadi active
+    document.getElementById(tabName).classList.add("active");
+    evt.currentTarget.classList.add("active");
+
+    // Perbarui judul pada Topbar secara dinamis berdasarkan menu yang dipilih
+    var currentLabel = evt.currentTarget.querySelector('.menu-label').innerText;
+    document.getElementById("page-title").innerText = currentLabel;
+
+    // Otomatis tutup sidebar setelah klik jika berada di mode layar handphone
+    if(window.innerWidth <= 768) {
+      document.getElementById("sidebar").classList.remove("open");
+    }
+  }
+
+  // Fungsi Toggle Hamburger Menu pada Tampilan HP
+  function toggleSidebar() {
+    var sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("open");
+  }
 </script>
 
 </body>
